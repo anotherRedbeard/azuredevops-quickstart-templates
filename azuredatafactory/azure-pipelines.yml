@@ -1,9 +1,7 @@
 trigger:
   branches:
     include:
-    - feature/*
-    - release/*
-    - develop
+    - main
   paths:
     include:
     - azuredatafactory
