@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "RestService",
 		"typeProperties": {
-			"url": "https://swapi.dev/api",
+			"url": "https://swapi.dev/api/films",
 			"enableServerCertificateValidation": false,
 			"authenticationType": "Anonymous"
 		}
