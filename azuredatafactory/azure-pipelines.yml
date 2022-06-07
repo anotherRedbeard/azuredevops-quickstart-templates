@@ -122,8 +122,8 @@ stages:
     displayName: Production deploy
     dependsOn: development
     variables:
-      resourceGroupName: $(resourceGroupPartialName)-dev
-      dataFactoryName: $(dataFactoryPartialName)-dev
+      resourceGroupName: $(resourceGroupPartialName)-prd
+      dataFactoryName: $(dataFactoryPartialName)-prd
     jobs: 
     - deployment: DeployToPRD
       pool:
