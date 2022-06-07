@@ -46,7 +46,7 @@ stages:
         - task: Npm@1
           inputs:
             command: 'custom'
-            customCommand: 'run build validate $(workingDir) /subscriptions/${{parameters.subscriptionId}}/resourceGroups/${{parameters.resourceGroupName}}/providers/Microsoft.DataFactory/factories/${{parameters.dataFactoryName}}'
+            customCommand: 'run build validate $(workingDir) /subscriptions/$(subscriptionId)/resourceGroups/$(resourceGroupName)/providers/Microsoft.DataFactory/factories/$(dataFactoryName)'
             workingDir: '$(workingDir)'
           displayName: 'Validate'
 
@@ -54,7 +54,7 @@ stages:
         - task: Npm@1
           inputs:
             command: 'custom'
-            customCommand: 'run build export $(workingDir) /subscriptions/${{parameters.subscriptionId}}/resourceGroups/${{parameters.resourceGroupName}}/providers/Microsoft.DataFactory/factories/${{parameters.dataFactoryName}} artifacts'
+            customCommand: 'run build export $(workingDir) /subscriptions/$(subscriptionId)/resourceGroups/$(resourceGroupName)/providers/Microsoft.DataFactory/factories/$(dataFactoryName) artifacts'
             workingDir: '$(workingDir)'
           displayName: 'Generate ARM template'
 
