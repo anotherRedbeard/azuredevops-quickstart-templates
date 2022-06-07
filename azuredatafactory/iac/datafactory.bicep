@@ -11,7 +11,7 @@ param repositoryType string = 'FactoryGitHubConfiguration'
 param projectName string  = 'Sandbox'
 param repositoryName string = 'azuredevops-quickstart-templates'
 param accountName string = 'anotherRedbeard'
-param collaborationBranch string = 'master'
+param collaborationBranch string = 'main'
 param rootFolder string = '/azuredatafactory/src'
 
 var azDevopsRepoConfiguration = {

@@ -92,7 +92,7 @@ stages:
     jobs: 
     - deployment: DeployToDevelopment
       pool:
-        vmImage: 'vs2017-win2016'
+        vmImage: 'windows-latest'
       environment: development 
       strategy:
         runOnce:
@@ -127,7 +127,7 @@ stages:
     jobs: 
     - deployment: DeployToPRD
       pool:
-        vmImage: vs2017-win2016
+        vmImage: 'windows-latest'
       environment: production
       strategy:
         runOnce:
@@ -151,7 +151,7 @@ stages:
                   csmFile: '$(Pipeline.Workspace)\datafactory\infrastructure\datafactory.json'
                   deploymentMode: "Incremental"
                   deploymentOutputs: "ArmOutputs"
-                  overrideParameters: -dataFactoryName $(dataFactoryName)
+                  overrideParameters: -dataFactoryName $(dataFactoryName) -environment production
 
           deploy:
             steps:
@@ -167,5 +167,5 @@ stages:
                   templateLocation: 'Linked artifact'
                   csmFile: '$(Pipeline.Workspace)/datafactory/application/ARMTemplateForFactory.json'
                   csmParametersFile: '$(Pipeline.Workspace)/datafactory/application/ARMTemplateParametersForFactory.json'
-                  overrideParameters: '-factoryName $(dataFactoryName)'
+                  overrideParameters: '-factoryName $(dataFactoryName) -environment production'
                   deploymentMode: 'Incremental'
