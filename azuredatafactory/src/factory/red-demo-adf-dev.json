@@ -1,5 +1,13 @@
 {
 	"name": "red-demo-adf-dev",
+	"properties": {
+		"globalParameters": {
+			"AzureStorageName": {
+				"type": "string",
+				"value": "redscusstgadfdemo01dev"
+			}
+		}
+	},
 	"location": "southcentralus",
 	"identity": {
 		"type": "SystemAssigned",
