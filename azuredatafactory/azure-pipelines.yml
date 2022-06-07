@@ -165,5 +165,5 @@ stages:
                   templateLocation: 'Linked artifact'
                   csmFile: '$(Pipeline.Workspace)/datafactory/application/ARMTemplateForFactory.json'
                   csmParametersFile: '$(Pipeline.Workspace)/datafactory/application/ARMTemplateParametersForFactory.json'
-                  overrideParameters: '-factoryName $(dataFactoryName)  -dataFactory_properties_globalParameters_AzureStorageName_value "redscusstgadfdemo01dev"'
+                  overrideParameters: '-factoryName $(dataFactoryName)  -dataFactory_properties_globalParameters_AzureStorageName_value "redscusstgadfdemo01prd"'
                   deploymentMode: 'Incremental'
