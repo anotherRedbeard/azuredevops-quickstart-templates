@@ -1,7 +1,7 @@
 
 param dataFactoryName string = 'red-demo-adf-dev'
 param location string = resourceGroup().location
-param environment string = ''
+param environment string = 'development'
 
 // @allowed([
 //   'FactoryVSTSConfiguration'
