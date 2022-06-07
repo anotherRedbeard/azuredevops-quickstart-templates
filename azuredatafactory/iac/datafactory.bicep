@@ -13,7 +13,6 @@ param repositoryName string = 'azuredevops-quickstart-templates'
 param accountName string = 'anotherRedbeard'
 param collaborationBranch string = 'master'
 param rootFolder string = '/azuredatafactory/src'
-param hostName string = ''
 
 var azDevopsRepoConfiguration = {
   accountName: accountName
