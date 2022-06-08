@@ -17,7 +17,7 @@ pool:
 variables:
   ARCHIVE_FOLDER: 'zip'
   SERVICE_CONNECTION: 'QuickStartTemplates-AzureServiceConnection'
-  LOGIC_APP_NAME: 'red-scus-statelessdemo-la-'
+  LOGIC_APP_NAME: 'red-scus-statelessdemo-la'
 
 stages:
 - stage: Build
