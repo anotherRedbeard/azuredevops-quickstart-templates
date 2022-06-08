@@ -75,7 +75,7 @@ stages:
 
 - stage: ProdDeploy
   displayName: Deploy to Prod
-  dependsOn: Build
+  dependsOn: DevDeploy
   jobs:
   - deployment: 'DeploytoDev'
     environment: 'production'
