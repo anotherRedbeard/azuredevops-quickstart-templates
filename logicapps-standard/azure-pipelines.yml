@@ -59,10 +59,9 @@ stages:
       runOnce:
         deploy:
           steps:
-            - task: DownloadBuildArtifacts@1
+            - task: DownloadPipelineArtifact@2
               inputs:
                 buildType: 'current'
-                downloadType: 'single'
                 artifactName: 'StdLogicApp'
                 downloadPath: '$(System.ArtifactsDirectory)'
             - task: AzureFunctionApp@1  
@@ -84,10 +83,9 @@ stages:
       runOnce:
         deploy:
           steps:
-            - task: DownloadBuildArtifacts@1
+            - task: DownloadPipelineArtifact@2
               inputs:
                 buildType: 'current'
-                downloadType: 'single'
                 artifactName: 'StdLogicApp'
                 downloadPath: '$(System.ArtifactsDirectory)'
             - task: AzureFunctionApp@1  
