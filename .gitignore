@@ -1,1 +1,5 @@
+#exclude mac folders
 .DS_Store
+
+#exclude azurite stuff
+**/__*

@@ -1,0 +1,99 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+    - logicapps-standard
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  ARCHIVE_FOLDER: 'zip'
+  SUBSCRIPTION_NAME: 'RedmanCorp Sub'
+  LOGIC_APP_NAME: 'red-scus-statelessdemo-la-'
+
+stages:
+- stage: Build
+  displayName: Build and create artifact
+  jobs:
+  - job: Build
+    displayName: Build
+    steps:
+    - task: CopyFiles@2
+      inputs:
+        Contents: |
+          **/*
+          !.*/**/*
+          !.*
+          !azure-pipelines*
+        TargetFolder: $(ARCHIVE_FOLDER)
+
+    # Archive everything in the 'zip' folder
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: $(ARCHIVE_FOLDER)
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+  
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        artifact: 'StdLogicApp'
+        publishLocation: 'pipeline'
+
+- stage: DevDeploy
+  displayName: Deploy to Dev
+  dependsOn: Build
+  jobs:
+  - deployment: 'DeploytoDev'
+    environment: 'development'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - task: DownloadBuildArtifacts@1
+              inputs:
+                buildType: 'current'
+                downloadType: 'single'
+                artifactName: 'StdLogicApp'
+                downloadPath: '$(System.ArtifactsDirectory)'
+            - task: AzureFunctionApp@1  
+              inputs:
+                azureSubscription: $(SUBSCRIPTION_NAME)
+                appType: 'workflowapp'
+                appName: $(LOGIC_APP_NAME)-dev
+                package: '$(System.ArtifactsDirectory)/*.zip'
+                deploymentMethod: 'zipDeploy'
+
+
+- stage: ProdDeploy
+  displayName: Deploy to Prod
+  dependsOn: Build
+  jobs:
+  - deployment: 'DeploytoDev'
+    environment: 'production'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - task: DownloadBuildArtifacts@1
+              inputs:
+                buildType: 'current'
+                downloadType: 'single'
+                artifactName: 'StdLogicApp'
+                downloadPath: '$(System.ArtifactsDirectory)'
+            - task: AzureFunctionApp@1  
+              inputs:
+                azureSubscription: $(SUBSCRIPTION_NAME)
+                appType: 'workflowapp'
+                appName: $(LOGIC_APP_NAME)-prd
+                package: '$(System.ArtifactsDirectory)/*.zip'
+                deploymentMethod: 'zipDeploy'

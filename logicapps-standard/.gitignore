@@ -1,0 +1,6 @@
+
+# Azure Functions artifacts
+.debug
+appsettings.json
+local.settings.json
+.funcignore

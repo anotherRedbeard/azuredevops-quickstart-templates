@@ -1,0 +1,18 @@
+{
+  "managedApiConnections": {
+    "azurequeues": {
+      "api": {
+        "id": "/subscriptions/8308f340-4d69-4343-a5af-5437a6121b15/providers/Microsoft.Web/locations/southcentralus/managedApis/azurequeues"
+      },
+      "connection": {
+        "id": "/subscriptions/8308f340-4d69-4343-a5af-5437a6121b15/resourceGroups/red-scus-logicappdemo-rg-dev/providers/Microsoft.Web/connections/azurequeues"
+      },
+      "connectionRuntimeUrl": "https://83abba3376dbe035.14.common.logic-southcentralus.azure-apihub.net/apim/azurequeues/8f6f7aa814e54ad480a6192f28047be6/",
+      "authentication": {
+        "type": "Raw",
+        "scheme": "Key",
+        "parameter": "@appsetting('azurequeues-connectionKey')"
+      }
+    }
+  }
+}
