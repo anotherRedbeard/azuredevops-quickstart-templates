@@ -16,10 +16,15 @@ pool:
 
 variables:
   ARCHIVE_FOLDER: 'zip'
+<<<<<<< HEAD
   SUBSCRIPTION_NAME: 'RedmanCorp Sub'
   LOGIC_APP_NAME: 'red-scus-statelessdemo-la-'
   RESOURCE_GROUP_NAME: 'red-scus-logicappdemo-rg'
   LOCTION_NAME: 'southcentralus'
+=======
+  SERVICE_CONNECTION: 'QuickStartTemplates-AzureServiceConnection'
+  LOGIC_APP_NAME: 'red-scus-statelessdemo-la'
+>>>>>>> 151a78d123c9c1f547b150fd46d1121c641991a8
 
 stages:
 - stage: Build
@@ -62,6 +67,7 @@ stages:
       runOnce:
         deploy:
           steps:
+<<<<<<< HEAD
             - task: AzureCLI@2
               inputs:
                 azureSubscription: $(azureServiceConnection)
@@ -72,14 +78,16 @@ stages:
                   az group create --name $(RESOURCE_GROUP_NAME)-dev --location $(LOCTION_NAME)
                   az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(templateFile)
             - task: DownloadBuildArtifacts@1
+=======
+            - task: DownloadPipelineArtifact@2
+>>>>>>> 151a78d123c9c1f547b150fd46d1121c641991a8
               inputs:
                 buildType: 'current'
-                downloadType: 'single'
                 artifactName: 'StdLogicApp'
                 downloadPath: '$(System.ArtifactsDirectory)'
             - task: AzureFunctionApp@1  
               inputs:
-                azureSubscription: $(SUBSCRIPTION_NAME)
+                azureSubscription: $(SERVICE_CONNECTION)
                 appType: 'workflowapp'
                 appName: $(LOGIC_APP_NAME)-dev
                 package: '$(System.ArtifactsDirectory)/*.zip'
@@ -88,7 +96,7 @@ stages:
 
 - stage: ProdDeploy
   displayName: Deploy to Prod
-  dependsOn: Build
+  dependsOn: DevDeploy
   jobs:
   - deployment: 'DeploytoDev'
     environment: 'production'
@@ -96,15 +104,14 @@ stages:
       runOnce:
         deploy:
           steps:
-            - task: DownloadBuildArtifacts@1
+            - task: DownloadPipelineArtifact@2
               inputs:
                 buildType: 'current'
-                downloadType: 'single'
                 artifactName: 'StdLogicApp'
                 downloadPath: '$(System.ArtifactsDirectory)'
             - task: AzureFunctionApp@1  
               inputs:
-                azureSubscription: $(SUBSCRIPTION_NAME)
+                azureSubscription: $(SERVICE_CONNECTION)
                 appType: 'workflowapp'
                 appName: $(LOGIC_APP_NAME)-prd
                 package: '$(System.ArtifactsDirectory)/*.zip'
