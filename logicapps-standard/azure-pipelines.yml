@@ -20,6 +20,7 @@ variables:
   LOGIC_APP_NAME: 'red-scus-statelessdemo-la'
   RESOURCE_GROUP_NAME: 'red-scus-logicappdemo-rg'
   LOCTION_NAME: 'southcentralus'
+  LASTD_TEMPLATE_FILE_LOCATION: '$(Build.SourcesDirectory)/logicapps-standard/iac/logic-aap-std.bicep'
 
 stages:
 - stage: Build
@@ -71,7 +72,7 @@ stages:
                   ls -ltra '$(Build.SourcesDirectory)'
                   az --version
                   az group create --name $(RESOURCE_GROUP_NAME)-dev --location $(LOCTION_NAME)
-                  az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(templateFile)
+                  az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(LASTD_TEMPLATE_FILE_LOCATION)
             - task: DownloadPipelineArtifact@2
               inputs:
                 buildType: 'current'
