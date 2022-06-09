@@ -78,8 +78,13 @@ stages:
       runOnce:
         deploy:
           steps:
-            
+            # download all artifacts 
+            - task: DownloadPipelineArtifact@2
+              inputs:
+                buildType: 'current'
+                downloadPath: '$(System.ArtifactsDirectory)'
 
+            # run Azure CLI command to deploy bicep template
             - task: AzureCLI@2
               inputs:
                 azureSubscription: $(SERVICE_CONNECTION)
@@ -90,8 +95,8 @@ stages:
                   ls -ltra $(Pipeline.Workspace)
                   echo '$(System.ArtifactsDirectory)'
                   ls -ltra $(System.ArtifactsDirectory)
-                  echo '$(Pipeline.Workspace)/logicapps-standard'
-                  ls -ltra $(Pipeline.Workspace)/logicapps-standard
+                  echo '$(Pipeline.Workspace)/StdLogicAppIAC'
+                  ls -ltra $(Pipeline.Workspace)/StdLogicAppIAC
                   echo '$(System.DefaultWorkingDirectory)'
                   ls -ltra $(System.DefaultWorkingDirectory)
                   ls -ltra $(Build.SourcesDirectory)/logicapps-standard/iac
@@ -99,12 +104,7 @@ stages:
                   az group create --name $(RESOURCE_GROUP_NAME)-dev --location $(LOCTION_NAME)
                   az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(Pipeline.Workspace)/logicapps-standard/iac/logic-app-std.bicep
 
-            # download all artifacts 
-            - task: DownloadPipelineArtifact@2
-              inputs:
-                buildType: 'current'
-                downloadPath: '$(System.ArtifactsDirectory)'
-
+            # deploy zip to app service
             - task: AzureFunctionApp@1  
               inputs:
                 azureSubscription: $(SERVICE_CONNECTION)
@@ -124,11 +124,14 @@ stages:
       runOnce:
         deploy:
           steps:
+
+            # download all artifacts 
             - task: DownloadPipelineArtifact@2
               inputs:
                 buildType: 'current'
-                artifactName: 'StdLogicApp'
                 downloadPath: '$(System.ArtifactsDirectory)'
+
+            # deploy zip to app service
             - task: AzureFunctionApp@1  
               inputs:
                 azureSubscription: $(SERVICE_CONNECTION)
