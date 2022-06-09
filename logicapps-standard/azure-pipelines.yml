@@ -34,18 +34,18 @@ stages:
       displayName: Copy Source Files to Archive
       inputs:
         Contents: |
-          **/*
+          **/logicapps-standard/*
           !.*/**/*
           !.*
           !azure-pipelines*
-          !**/azuredatafactory/**/*
           !**/iac/**/*
         TargetFolder: $(ARCHIVE_FOLDER)
+
     - task: CopyFiles@2
       displayName: Copy iac files
       inputs:
         Contents: |
-          **/iac/*
+          **/logicapps-standard/iac/*
         TargetFolder: $(IAC_FOLDER)
 
     # Archive everything in the 'zip' folder
@@ -60,6 +60,12 @@ stages:
       inputs:
         targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
         artifact: 'StdLogicApp'
+        publishLocation: 'pipeline'
+
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(IAC_FOLDER)'
+        artifact: 'StdLogicAppIAC'
         publishLocation: 'pipeline'
 
 
@@ -79,8 +85,8 @@ stages:
                 scriptType: bash
                 scriptLocation: inlineScript
                 inlineScript: |
-                  echo '$(IAC_FOLDER)'
-                  ls -ltra $(IAC_FOLDER)
+                  echo '$(System.ArtifactsDirectory)'
+                  ls -ltra $(System.ArtifactsDirectory)
                   echo '$(System.DefaultWorkingDirectory)'
                   ls -ltra $(System.DefaultWorkingDirectory)
                   ls -ltra $(Build.SourcesDirectory)/logicapps-standard/iac
