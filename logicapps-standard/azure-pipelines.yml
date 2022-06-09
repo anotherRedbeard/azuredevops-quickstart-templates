@@ -37,11 +37,12 @@ stages:
           !.*/**/*
           !.*
           !azure-pipelines*
+          !iac/*
         TargetFolder: $(ARCHIVE_FOLDER)
     - task: CopyFiles@2
       inputs:
         Contents: |
-          /logicapps-standard/iac/*
+          **/iac/*
         TargetFolder: $(IAC_FOLDER)
 
     # Archive everything in the 'zip' folder
