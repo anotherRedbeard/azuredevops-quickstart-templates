@@ -15,13 +15,12 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  ARCHIVE_FOLDER: 'zip'
-  IAC_FOLDER: 'iac'
+  ARCHIVE_FOLDER: 'archive'
   SERVICE_CONNECTION: 'QuickStartTemplates-AzureServiceConnection'
   LOGIC_APP_NAME: 'red-scus-statelessdemo-la'
   RESOURCE_GROUP_NAME: 'red-scus-logicappdemo-rg'
   LOCTION_NAME: 'southcentralus'
-  LASTD_TEMPLATE_FILE_LOCATION: '$(IAC_FOLDER)/logic-app-std.bicep'
+  LASTD_TEMPLATE_FILE_LOCATION: '$(System.ArtifactsDirectory)/logicapps-standard/iac/logic-app-std.bicep'
 
 stages:
 - stage: Build
@@ -39,19 +38,19 @@ stages:
           !.*
           !azure-pipelines*
           !**/iac/**/*
-        TargetFolder: $(ARCHIVE_FOLDER)
+        TargetFolder: $(ARCHIVE_FOLDER)/src
 
     - task: CopyFiles@2
       displayName: Copy IAC Files
       inputs:
         Contents: |
           **/logicapps-standard/iac/*
-        TargetFolder: $(IAC_FOLDER)
+        TargetFolder: $(ARCHIVE_FOLDER)/iac
 
     # Archive everything in the 'zip' folder
     - task: ArchiveFiles@2
       inputs:
-        rootFolderOrFile: $(ARCHIVE_FOLDER)
+        rootFolderOrFile: $(ARCHIVE_FOLDER)/src
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
@@ -59,13 +58,13 @@ stages:
     - task: PublishPipelineArtifact@1
       inputs:
         targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-        artifact: 'StdLogicApp'
+        artifact: 'StdLogicApp/src'
         publishLocation: 'pipeline'
 
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$(IAC_FOLDER)'
-        artifact: 'StdLogicAppIAC'
+        targetPath: '$(ARCHIVE_FOLDER)/iac'
+        artifact: 'StdLogicApp/iac'
         publishLocation: 'pipeline'
 
 - stage: DevDeploy
@@ -102,7 +101,7 @@ stages:
                   ls -ltra $(Build.SourcesDirectory)/logicapps-standard/iac
                   az --version
                   az group create --name $(RESOURCE_GROUP_NAME)-dev --location $(LOCTION_NAME)
-                  az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(Pipeline.Workspace)/logicapps-standard/iac/logic-app-std.bicep
+                  az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(System.ArtifactsDirectory)/StdLogicApp/iac/logicapps-standard/iac/logic-app-std.bicep
 
             # deploy zip to app service
             - task: AzureFunctionApp@1  
@@ -110,7 +109,7 @@ stages:
                 azureSubscription: $(SERVICE_CONNECTION)
                 appType: 'workflowapp'
                 appName: $(LOGIC_APP_NAME)-dev
-                package: '$(System.ArtifactsDirectory)/*.zip'
+                package: '$(System.ArtifactsDirectory)/src/*.zip'
                 deploymentMethod: 'zipDeploy'
 
 
