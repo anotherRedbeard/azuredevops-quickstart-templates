@@ -90,18 +90,9 @@ stages:
                 scriptType: bash
                 scriptLocation: inlineScript
                 inlineScript: |
-                  echo '$(Pipeline.Workspace)'
-                  ls -ltra $(Pipeline.Workspace)
-                  echo '$(System.ArtifactsDirectory)'
-                  ls -ltra $(System.ArtifactsDirectory)
-                  echo '$(Pipeline.Workspace)/StdLogicAppIAC'
-                  ls -ltra $(Pipeline.Workspace)/StdLogicAppIAC
-                  echo '$(System.DefaultWorkingDirectory)'
-                  ls -ltra $(System.DefaultWorkingDirectory)
-                  ls -ltra $(Build.SourcesDirectory)/logicapps-standard/iac
                   az --version
                   az group create --name $(RESOURCE_GROUP_NAME)-dev --location $(LOCTION_NAME)
-                  az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(System.ArtifactsDirectory)/StdLogicApp/iac/logicapps-standard/iac/logic-app-std.bicep
+                  az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(System.ArtifactsDirectory)/app-iac/iac/logicapps-standard/iac/logic-app-std.bicep
 
             # deploy zip to app service
             - task: AzureFunctionApp@1  
@@ -109,7 +100,7 @@ stages:
                 azureSubscription: $(SERVICE_CONNECTION)
                 appType: 'workflowapp'
                 appName: $(LOGIC_APP_NAME)-dev
-                package: '$(System.ArtifactsDirectory)/src/*.zip'
+                package: '$(System.ArtifactsDirectory)/app-src/*.zip'
                 deploymentMethod: 'zipDeploy'
 
 
