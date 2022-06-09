@@ -69,7 +69,10 @@ stages:
                 scriptType: bash
                 scriptLocation: inlineScript
                 inlineScript: |
-                  ls -ltra $(Build.SourcesDirectory)
+                  echo '$(Build.SourcesDirectory)'
+                  ls -ltra $(Build.SourcesDirectory)/
+                  echo 'here'
+                  ls -ltra $(Build.SourcesDirectory)/logicapps-standard/iac
                   az --version
                   az group create --name $(RESOURCE_GROUP_NAME)-dev --location $(LOCTION_NAME)
                   az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(Build.SourcesDirectory)/logicapps-standard/iac/logic-app-std.bicep
