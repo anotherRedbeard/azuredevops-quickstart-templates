@@ -79,8 +79,8 @@ stages:
                 scriptType: bash
                 scriptLocation: inlineScript
                 inlineScript: |
-                  echo '$(LASTD_TEMPLATE_FILE_LOCATION)'
-                  ls -ltra $(LASTD_TEMPLATE_FILE_LOCATION)/
+                  echo '$(IAC_FOLDER)'
+                  ls -ltra $(IAC_FOLDER)
                   echo '$(System.DefaultWorkingDirectory)'
                   ls -ltra $(System.DefaultWorkingDirectory)
                   ls -ltra $(Build.SourcesDirectory)/logicapps-standard/iac
