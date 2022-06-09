@@ -65,12 +65,19 @@ stages:
       runOnce:
         deploy:
           steps:
+            - task: DownloadPipelineArtifact@2
+              inputs:
+                buildType: 'current'
+                downloadPath: '$(System.ArtifactsDirectory)'
+
             - task: AzureCLI@2
               inputs:
                 azureSubscription: $(SERVICE_CONNECTION)
                 scriptType: bash
                 scriptLocation: inlineScript
                 inlineScript: |
+                  echo '$(Pipeline.Workspace)'
+                  ls -ltra $(Pipeline.Workspace)
                   echo '$(Pipeline.Workspace)/logicapps-standard'
                   ls -ltra $(Pipeline.Workspace)/logicapps-standard
                   echo '$(System.DefaultWorkingDirectory)'
@@ -79,11 +86,7 @@ stages:
                   az --version
                   az group create --name $(RESOURCE_GROUP_NAME)-dev --location $(LOCTION_NAME)
                   az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(Pipeline.Workspace)/logicapps-standard/iac/logic-app-std.bicep
-            - task: DownloadPipelineArtifact@2
-              inputs:
-                buildType: 'current'
-                artifactName: 'StdLogicApp'
-                downloadPath: '$(System.ArtifactsDirectory)'
+
             - task: AzureFunctionApp@1  
               inputs:
                 azureSubscription: $(SERVICE_CONNECTION)
