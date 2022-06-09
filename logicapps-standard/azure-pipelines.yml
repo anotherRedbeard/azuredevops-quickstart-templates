@@ -18,6 +18,8 @@ variables:
   ARCHIVE_FOLDER: 'zip'
   SUBSCRIPTION_NAME: 'RedmanCorp Sub'
   LOGIC_APP_NAME: 'red-scus-statelessdemo-la-'
+  RESOURCE_GROUP_NAME: 'red-scus-logicappdemo-rg'
+  LOCTION_NAME: 'southcentralus'
 
 stages:
 - stage: Build
@@ -49,6 +51,7 @@ stages:
         artifact: 'StdLogicApp'
         publishLocation: 'pipeline'
 
+
 - stage: DevDeploy
   displayName: Deploy to Dev
   dependsOn: Build
@@ -59,6 +62,15 @@ stages:
       runOnce:
         deploy:
           steps:
+            - task: AzureCLI@2
+              inputs:
+                azureSubscription: $(azureServiceConnection)
+                scriptType: bash
+                scriptLocation: inlineScript
+                inlineScript: |
+                  az --version
+                  az group create --name $(RESOURCE_GROUP_NAME)-dev --location $(LOCTION_NAME)
+                  az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(templateFile)
             - task: DownloadBuildArtifacts@1
               inputs:
                 buildType: 'current'
