@@ -16,11 +16,12 @@ pool:
 
 variables:
   ARCHIVE_FOLDER: 'zip'
+  IAC_FOLDER: 'iac'
   SERVICE_CONNECTION: 'QuickStartTemplates-AzureServiceConnection'
   LOGIC_APP_NAME: 'red-scus-statelessdemo-la'
   RESOURCE_GROUP_NAME: 'red-scus-logicappdemo-rg'
   LOCTION_NAME: 'southcentralus'
-  LASTD_TEMPLATE_FILE_LOCATION: '$(Build.SourcesDirectory)/logicapps-standard/iac/logic-app-std.bicep'
+  LASTD_TEMPLATE_FILE_LOCATION: '$(IAC_FOLDER)/logic-app-std.bicep'
 
 stages:
 - stage: Build
@@ -37,6 +38,11 @@ stages:
           !.*
           !azure-pipelines*
         TargetFolder: $(ARCHIVE_FOLDER)
+    - task: CopyFiles@2
+      inputs:
+        Contents: |
+          /logicapps-standard/iac/*
+        TargetFolder: $(IAC_FOLDER)
 
     # Archive everything in the 'zip' folder
     - task: ArchiveFiles@2
@@ -69,8 +75,8 @@ stages:
                 scriptType: bash
                 scriptLocation: inlineScript
                 inlineScript: |
-                  echo '$(Build.SourcesDirectory)'
-                  ls -ltra $(Build.SourcesDirectory)/
+                  echo '$(LASTD_TEMPLATE_FILE_LOCATION)'
+                  ls -ltra $(LASTD_TEMPLATE_FILE_LOCATION)/
                   echo '$(System.DefaultWorkingDirectory)'
                   ls -ltra $(System.DefaultWorkingDirectory)
                   ls -ltra $(Build.SourcesDirectory)/logicapps-standard/iac
