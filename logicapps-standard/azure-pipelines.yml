@@ -71,7 +71,8 @@ stages:
                 inlineScript: |
                   echo '$(Build.SourcesDirectory)'
                   ls -ltra $(Build.SourcesDirectory)/
-                  echo 'here'
+                  echo '$(System.DefaultWorkingDirectory)'
+                  ls -ltra $(System.DefaultWorkingDirectory)
                   ls -ltra $(Build.SourcesDirectory)/logicapps-standard/iac
                   az --version
                   az group create --name $(RESOURCE_GROUP_NAME)-dev --location $(LOCTION_NAME)
