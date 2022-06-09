@@ -31,15 +31,18 @@ stages:
     displayName: Build
     steps:
     - task: CopyFiles@2
+      displayName: Copy Source Files to Archive
       inputs:
         Contents: |
           **/*
           !.*/**/*
           !.*
           !azure-pipelines*
-          !iac/*
+          !**/azuredatafactory/**/*
+          !**/iac/**/*
         TargetFolder: $(ARCHIVE_FOLDER)
     - task: CopyFiles@2
+      displayName: Copy iac files
       inputs:
         Contents: |
           **/iac/*
