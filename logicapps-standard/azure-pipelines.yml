@@ -68,6 +68,7 @@ stages:
                 scriptType: bash
                 scriptLocation: inlineScript
                 inlineScript: |
+                  ls -ltra '$(Build.SourcesDirectory)'
                   az --version
                   az group create --name $(RESOURCE_GROUP_NAME)-dev --location $(LOCTION_NAME)
                   az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(templateFile)
