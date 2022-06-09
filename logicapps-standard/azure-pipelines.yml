@@ -72,7 +72,7 @@ stages:
                   ls -ltra $(Build.SourcesDirectory)
                   az --version
                   az group create --name $(RESOURCE_GROUP_NAME)-dev --location $(LOCTION_NAME)
-                  az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(LASTD_TEMPLATE_FILE_LOCATION)
+                  az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(Build.SourcesDirectory)/logicapps-standard/iac/logic-app-standard.bicep
             - task: DownloadPipelineArtifact@2
               inputs:
                 buildType: 'current'
