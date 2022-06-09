@@ -16,8 +16,8 @@ pool:
 
 variables:
   ARCHIVE_FOLDER: 'zip'
-  SUBSCRIPTION_NAME: 'RedmanCorp Sub'
-  LOGIC_APP_NAME: 'red-scus-statelessdemo-la-'
+  SERVICE_CONNECTION: 'QuickStartTemplates-AzureServiceConnection'
+  LOGIC_APP_NAME: 'red-scus-statelessdemo-la'
   RESOURCE_GROUP_NAME: 'red-scus-logicappdemo-rg'
   LOCTION_NAME: 'southcentralus'
 
