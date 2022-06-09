@@ -31,7 +31,7 @@ stages:
     displayName: Build
     steps:
     - task: CopyFiles@2
-      displayName: Copy Source Files to Archive
+      displayName: Copy Source Files
       inputs:
         Contents: |
           **/logicapps-standard/*
@@ -40,6 +40,13 @@ stages:
           !azure-pipelines*
           !**/iac/**/*
         TargetFolder: $(ARCHIVE_FOLDER)
+
+    - task: CopyFiles@2
+      displayName: Copy IAC Files
+      inputs:
+        Contents: |
+          **/logicapps-standard/iac/*
+        TargetFolder: $(IAC_FOLDER)
 
     # Archive everything in the 'zip' folder
     - task: ArchiveFiles@2
@@ -53,6 +60,12 @@ stages:
       inputs:
         targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
         artifact: 'StdLogicApp'
+        publishLocation: 'pipeline'
+
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(IAC_FOLDER)'
+        artifact: 'StdLogicAppIAC'
         publishLocation: 'pipeline'
 
 - stage: DevDeploy
