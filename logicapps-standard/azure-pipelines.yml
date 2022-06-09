@@ -41,13 +41,6 @@ stages:
           !**/iac/**/*
         TargetFolder: $(ARCHIVE_FOLDER)
 
-    - task: CopyFiles@2
-      displayName: Copy iac files
-      inputs:
-        Contents: |
-          **/logicapps-standard/iac/*
-        TargetFolder: $(IAC_FOLDER)
-
     # Archive everything in the 'zip' folder
     - task: ArchiveFiles@2
       inputs:
@@ -62,13 +55,6 @@ stages:
         artifact: 'StdLogicApp'
         publishLocation: 'pipeline'
 
-    - task: PublishPipelineArtifact@1
-      inputs:
-        targetPath: '$(IAC_FOLDER)'
-        artifact: 'StdLogicAppIAC'
-        publishLocation: 'pipeline'
-
-
 - stage: DevDeploy
   displayName: Deploy to Dev
   dependsOn: Build
@@ -79,19 +65,14 @@ stages:
       runOnce:
         deploy:
           steps:
-            - task: DownloadPipelineArtifact@2
-              inputs:
-                buildType: 'current'
-                artifactName: 'StdLogicAppIAC'
-                downloadPath: '$(Pipeline.Workspace)'
             - task: AzureCLI@2
               inputs:
                 azureSubscription: $(SERVICE_CONNECTION)
                 scriptType: bash
                 scriptLocation: inlineScript
                 inlineScript: |
-                  echo '$(Pipeline.Workspace)'
-                  ls -ltra $(Pipeline.Workspace)
+                  echo '$(Pipeline.Workspace)/logicapps-standard'
+                  ls -ltra $(Pipeline.Workspace)/logicapps-standard
                   echo '$(System.DefaultWorkingDirectory)'
                   ls -ltra $(System.DefaultWorkingDirectory)
                   ls -ltra $(Build.SourcesDirectory)/logicapps-standard/iac
