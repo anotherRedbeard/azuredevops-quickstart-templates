@@ -20,7 +20,7 @@ variables:
   LOGIC_APP_NAME: 'red-scus-statelessdemo-la'
   RESOURCE_GROUP_NAME: 'red-scus-logicappdemo-rg'
   LOCTION_NAME: 'southcentralus'
-  LASTD_TEMPLATE_FILE_LOCATION: '$(Build.SourcesDirectory)/logicapps-standard/iac/logic-aap-std.bicep'
+  LASTD_TEMPLATE_FILE_LOCATION: '$(Build.SourcesDirectory)/logicapps-standard/iac/logic-app-std.bicep'
 
 stages:
 - stage: Build
