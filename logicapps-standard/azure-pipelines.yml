@@ -35,8 +35,8 @@ stages:
       inputs:
         Contents: |
           **/logicapps-standard/**/*
-          !.*/**/*
-          !.*
+          !logicapps-standard/.*/**/*
+          !logicapps-standard/.*
           !logicapps-standard/azure-pipelines*
           !**/iac/**/*
         TargetFolder: $(ARCHIVE_FOLDER)/src
@@ -135,7 +135,7 @@ stages:
                 inlineScript: |
                   az --version
                   az group create --name $(RESOURCE_GROUP_NAME)-prd --location $(LOCATION_NAME)
-                  az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-prd --template-file $(LASTD_TEMPLATE_FILE_LOCATION) --parameters logic_app_name=$(LOGIC_APP_NAME) location_prefix=$(LOCATION_PREFIX) environment=dev
+                  az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-prd --template-file $(LASTD_TEMPLATE_FILE_LOCATION) --parameters logic_app_name=$(LOGIC_APP_NAME) location_prefix=$(LOCATION_PREFIX) environment=prd
                   echo "##vso[task.setvariable variable=PROVISIONED_LA_NAME]$(az deployment group show --resource-group $(RESOURCE_GROUP_NAME)-prd --name main  --query properties.outputs.logic_app.value  --output tsv)"
 
             # deploy zip to app service
