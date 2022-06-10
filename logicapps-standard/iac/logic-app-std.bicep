@@ -32,7 +32,7 @@ properties: {
 // Dedicated app plan for the service
 var laName = 'red-${location_prefix}-${name}-asp-${environment}'
 resource plan 'Microsoft.Web/serverfarms@2021-02-01' = {
-name: laName
+name: 'foo-la-t'
 location: location
 sku: {
   tier: 'WorkflowStandard'
