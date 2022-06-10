@@ -93,7 +93,7 @@ stages:
                 inlineScript: |
                   az --version
                   az group create --name $(RESOURCE_GROUP_NAME)-dev --location $(LOCTION_NAME)
-                  az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(LASTD_TEMPLATE_FILE_LOCATION)
+                  az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(LASTD_TEMPLATE_FILE_LOCATION) --parameters logicAppName=$(LOGIC_APP_NAME)-dev
 
             # deploy zip to app service
             - task: AzureFunctionApp@1  
