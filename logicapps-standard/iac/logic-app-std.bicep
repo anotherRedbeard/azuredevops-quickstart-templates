@@ -17,7 +17,7 @@ var minimumElasticSize = ((environment == 'pr') ? 2 : 1)
 
 // Storage account for the service
 resource storage 'Microsoft.Storage/storageAccounts@2019-06-01' = {
-name: 'st${name}logic${environment}'
+name: 'st${name}${environment}'
 location: location
 kind: 'StorageV2'
 sku: {
