@@ -17,7 +17,7 @@ pool:
 variables:
   ARCHIVE_FOLDER: 'archive'
   SERVICE_CONNECTION: 'QuickStartTemplates-AzureServiceConnection'
-  LOGIC_APP_NAME: 'statelessdemo'
+  LOGIC_APP_NAME: 'stlessdemo'
   RESOURCE_GROUP_NAME: 'red-scus-logicappdemo-rg'
   LOCATION_NAME: 'southcentralus'
   LOCATION_PREFIX: 'scus'

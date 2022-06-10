@@ -9,7 +9,7 @@ param location_prefix string
 @maxLength(10)
 @minLength(2)
 @description('The name of the logic app to create.')
-param name string = 'integrate'
+param logic_app_name string 
 
 @allowed([
   'dev'
@@ -26,7 +26,7 @@ module logws './log-analytics-ws.bicep' = {
   name: 'LogWorkspaceDeployment'
   params: {
     environment: environment
-    name: name
+    name: logic_app_name
     location: location
     location_prefix: location_prefix
   }
@@ -37,7 +37,7 @@ module logic './logic-app-std.bicep' = {
   name: 'LogicAppServiceDeployment'
   params: { // Pass on shared parameters
     environment: environment
-    name: name
+    name: logic_app_name
     logwsid: logws.outputs.id
     location: location
     location_prefix: location_prefix
