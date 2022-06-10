@@ -19,8 +19,8 @@ variables:
   SERVICE_CONNECTION: 'QuickStartTemplates-AzureServiceConnection'
   LOGIC_APP_NAME: 'statelessdemo'
   RESOURCE_GROUP_NAME: 'red-scus-logicappdemo-rg'
-  LOCTION_NAME: 'southcentralus'
-  LOCTION_PREFIX: 'scus'
+  LOCATION_NAME: 'southcentralus'
+  LOCATION_PREFIX: 'scus'
   LASTD_TEMPLATE_FILE_LOCATION: '$(System.ArtifactsDirectory)/app-iac/logicapps-standard/iac/main.bicep'
 
 stages:
@@ -93,7 +93,7 @@ stages:
                 scriptLocation: inlineScript
                 inlineScript: |
                   az --version
-                  az group create --name $(RESOURCE_GROUP_NAME)-dev --location $(LOCTION_NAME)
+                  az group create --name $(RESOURCE_GROUP_NAME)-dev --location $(LOCATION_NAME)
                   az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(LASTD_TEMPLATE_FILE_LOCATION) --parameters name=$(LOGIC_APP_NAME) location_prefix=$(LOCATION_PREFIX) environment=dev
 
             # deploy zip to app service
