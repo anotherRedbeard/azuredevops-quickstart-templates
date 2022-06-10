@@ -17,7 +17,7 @@ pool:
 variables:
   ARCHIVE_FOLDER: 'archive'
   SERVICE_CONNECTION: 'QuickStartTemplates-AzureServiceConnection'
-  LOGIC_APP_NAME: 'statelessdemo'
+  LOGIC_APP_NAME: 'stateless'
   RESOURCE_GROUP_NAME: 'red-cus-demo-rg'
   LOCATION_NAME: 'centralus'
   LOCATION_PREFIX: 'cus'
