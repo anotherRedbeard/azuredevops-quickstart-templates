@@ -95,8 +95,7 @@ stages:
                   az --version
                   az group create --name $(RESOURCE_GROUP_NAME)-dev --location $(LOCATION_NAME)
                   az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(LASTD_TEMPLATE_FILE_LOCATION) --parameters logic_app_name=$(LOGIC_APP_NAME) location_prefix=$(LOCATION_PREFIX) environment=dev
-                  foo=$(az deployment group show --resource-group $(RESOURCE_GROUP_NAME)-dev --name main  --query properties.outputs.logic_app.value)
-                  echo $foo
+                  echo "##vso[task.setvariable variable=PROVISIONED_LA_NAME]$(az deployment group show --resource-group $(RESOURCE_GROUP_NAME)-dev --name main  --query properties.outputs.logic_app.value)"
 
             # deploy zip to app service
             - task: AzureFunctionApp@1  
@@ -104,7 +103,7 @@ stages:
               inputs:
                 azureSubscription: $(SERVICE_CONNECTION)
                 appType: 'workflowapp'
-                appName: $(LOGIC_APP_NAME)-dev
+                appName: $(PROVISIONED_LA_NAME)
                 package: '$(System.ArtifactsDirectory)/app-src/*.zip'
                 deploymentMethod: 'zipDeploy'
 
