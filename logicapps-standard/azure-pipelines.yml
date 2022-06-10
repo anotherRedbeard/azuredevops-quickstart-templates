@@ -17,7 +17,7 @@ pool:
 variables:
   ARCHIVE_FOLDER: 'archive'
   SERVICE_CONNECTION: 'QuickStartTemplates-AzureServiceConnection'
-  LOGIC_APP_NAME: 'red-scus-statelessdemo-la'
+  LOGIC_APP_NAME: 'statelessdemo'
   RESOURCE_GROUP_NAME: 'red-scus-logicappdemo-rg'
   LOCTION_NAME: 'southcentralus'
   LASTD_TEMPLATE_FILE_LOCATION: '$(System.ArtifactsDirectory)/app-iac/logicapps-standard/iac/logic-app-std.bicep'
@@ -72,7 +72,7 @@ stages:
   dependsOn: Build
   jobs:
   - deployment: 'DeploytoDev'
-    environment: 'development'
+    environment: 'dev'
     strategy:
       runOnce:
         deploy:
@@ -93,7 +93,7 @@ stages:
                 inlineScript: |
                   az --version
                   az group create --name $(RESOURCE_GROUP_NAME)-dev --location $(LOCTION_NAME)
-                  az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(LASTD_TEMPLATE_FILE_LOCATION) --parameters logicAppName=$(LOGIC_APP_NAME)-dev
+                  az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(LASTD_TEMPLATE_FILE_LOCATION) --parameters name=$(LOGIC_APP_NAME) location_prefix=$(LOCATION_PREFIX) environment=dev
 
             # deploy zip to app service
             - task: AzureFunctionApp@1  
@@ -111,7 +111,7 @@ stages:
   dependsOn: DevDeploy
   jobs:
   - deployment: 'DeploytoDev'
-    environment: 'production'
+    environment: 'prd'
     strategy:
       runOnce:
         deploy:

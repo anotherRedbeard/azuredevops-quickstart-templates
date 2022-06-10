@@ -91,7 +91,7 @@ stages:
     - deployment: DeployToDevelopment
       pool:
         vmImage: 'windows-latest'
-      environment: development 
+      environment: dev 
       strategy:
         runOnce:
           deploy:
@@ -126,7 +126,7 @@ stages:
     - deployment: DeployToPRD
       pool:
         vmImage: 'windows-latest'
-      environment: production
+      environment: prd
       strategy:
         runOnce:
           preDeploy:
