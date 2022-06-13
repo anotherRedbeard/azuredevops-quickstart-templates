@@ -51,7 +51,7 @@ stages:
     # Archive everything in the 'zip' folder
     - task: ArchiveFiles@2
       inputs:
-        rootFolderOrFile: $(ARCHIVE_FOLDER)/src/logicapps-standard
+        rootFolderOrFile: $(ARCHIVE_FOLDER)/src/logicapps-standard/src
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
