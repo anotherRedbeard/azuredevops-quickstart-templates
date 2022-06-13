@@ -1,7 +1,7 @@
 # Getting started with this repo
 
 - Clone repo
-- Create new `local.settings.json` in project root
+- Create new `src/local.settings.json` in project root
 - Use this a template for your `local.settings.json` file:
 
 ```json

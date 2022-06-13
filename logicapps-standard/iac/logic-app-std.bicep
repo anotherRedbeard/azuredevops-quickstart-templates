@@ -11,7 +11,7 @@ param location string = resourceGroup().location
 param location_prefix string
 
 // Set minimum of 2 worker nodes in production
-var minimumElasticSize = ((environment == 'pr') ? 2 : 1)
+//var minimumElasticSize = ((environment == 'prd') ? 2 : 1)
 
 // =================================
 
@@ -38,8 +38,8 @@ sku: {
   name: 'WS1'
 }
 properties: {
-  targetWorkerCount: minimumElasticSize
-  maximumElasticWorkerCount: 20
+  targetWorkerCount: 1 //minimumElasticSize
+  maximumElasticWorkerCount: 1 //20
   elasticScaleEnabled: true
   isSpot: false
   zoneRedundant: true
