@@ -26,10 +26,16 @@ variables:
 stages:
 - stage: Build
   displayName: Build and create artifact
+  variables:
+    managedApiConnections.azurequeues.authentication.type: 'ManagedIdentity'
+    managedApiConnections.azurequeues.authentication.scheme: ''
+    managedApiConnections.azurequeues.authentication.parameter: ''
+    
   jobs:
   - job: Build
     displayName: Build
     steps:
+    
     - task: CopyFiles@2
       displayName: Copy Source Files
       inputs:
@@ -55,6 +61,15 @@ stages:
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+
+    # Update appsettings.json via FileTransform task.
+    - task: FileTransform@1
+      displayName: 'File transformation: connections.json'
+      inputs:
+        folderPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        targetFiles: '**/connections.json'
+        fileType: json
+
   
     - task: PublishPipelineArtifact@1
       inputs:
