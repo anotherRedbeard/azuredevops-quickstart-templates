@@ -7,6 +7,18 @@
                 "inputs": "@triggerOutputs()['queries']",
                 "runAfter": {}
             },
+            "Response": {
+                "type": "Response",
+                "kind": "http",
+                "inputs": {
+                    "statusCode": 200
+                },
+                "runAfter": {
+                    "Put_a_message_on_a_queue_(V2)": [
+                        "Succeeded"
+                    ]
+                }
+            },
             "Put_a_message_on_a_queue_(V2)": {
                 "type": "ApiConnection",
                 "inputs": {
@@ -36,5 +48,5 @@
         "contentVersion": "1.0.0.0",
         "outputs": {}
     },
-    "kind": "Stateless"
+    "kind": "Stateful"
 }

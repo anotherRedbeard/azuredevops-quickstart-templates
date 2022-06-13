@@ -1,8 +1,4 @@
-# Azure Functions artifacts
-.debug
-appsettings.json
-local.settings.json
-.funcignore
-
 #exclude azurite stuff
 **/__*
+**/.debug/*
+.debug
