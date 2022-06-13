@@ -42,7 +42,7 @@ properties: {
   maximumElasticWorkerCount: 20
   elasticScaleEnabled: true
   isSpot: false
-  zoneRedundant: false
+  zoneRedundant: true
 }
 }
 
