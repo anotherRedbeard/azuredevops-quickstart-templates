@@ -26,8 +26,10 @@ variables:
 stages:
 - stage: Build
   displayName: Build and create artifact
+
+  # setting variables for the connections.json file that need to be transformed to work in Azure
   variables:
-    managedApiConnections.azurequeues.authentication.type: 'ManagedIdentity'
+    managedApiConnections.azurequeues.authentication.type: 'ManagedServiceIdentity'
     managedApiConnections.azurequeues.authentication.scheme: ''
     managedApiConnections.azurequeues.authentication.parameter: ''
     
@@ -62,7 +64,7 @@ stages:
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
 
-    # Update appsettings.json via FileTransform task.
+    # Update connections.json via FileTransform task using variables above
     - task: FileTransform@1
       displayName: 'File transformation: connections.json'
       inputs:
