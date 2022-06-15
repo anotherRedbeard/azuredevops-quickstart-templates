@@ -40,7 +40,7 @@ stages:
       inputs:
         command: publish
         arguments: '--configuration Release --output publish_output'
-        projects: 'src/src.csproj'
+        projects: '*.csproj'
         publishWebProjects: false
         modifyOutputPath: false
         zipAfterPublish: false
