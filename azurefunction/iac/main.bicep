@@ -30,7 +30,7 @@ param env string = 'dev'
   'dotnet'
   'java'
 ])
-param runtime string = 'node'
+param runtime string = 'dotnet'
 
 var functionAppName = 'red-${location_prefix}-${appName}-fn-${env}'
 var hostingPlanName = 'red-${location_prefix}-${appName}-asp-${env}'
