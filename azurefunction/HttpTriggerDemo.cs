@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace src
+namespace azurefunction
 {
     public static class HttpTriggerDemo
     {
