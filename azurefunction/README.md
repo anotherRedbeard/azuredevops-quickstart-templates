@@ -2,6 +2,34 @@
 
 This folder contains a sample Azure Functions project with an Azure deployment pipeline example.  I created this example using the [documentation created by the Functions team](https://docs.microsoft.com/en-us/azure/azure-functions/create-first-function-vs-code-csharp?tabs=in-process) and I recommend that you get familiar with that doc in order to better understand what is in this folder.  The doc will tell you all the pre-requisites that you will need to run this project locally.
 
+I did run into a few problems following the document above so I thought I would include them here in case it might be helpful to others.
+
+- My VSCode Azure extension didn't have the Azure Functions view for some reason so I wasn't able to just `Create new Project`, so here is what I did to work around that
+  - I did have a Workspace view where I could hit the + sign and select `Create Function`, but this failed for me as well.
+    - ![Azure Workspace view to create a function](../docs/azWorkspaceView.png)
+  - The next thing I tried was using the Azure Functions Core Tools to create the [functions project](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Cmacos%2Ccsharp%2Cportal%2Cbash#create-a-local-functions-project) and [function](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Cmacos%2Ccsharp%2Cportal%2Cbash#create-func). Unfortunately this also failed for me with the following error
+    - ![Azure Functions Core Tools CLI error creating function](../docs/azFunctionsCoreToolsError.png)
+    - The reson for this error is that I had multiple versions of the `dotnet sdk` installed and it was confused as to which one to use.  Here is how I fixed this:
+      - test
+      - test
+
+
+	• You can also hit the create function button from the Workspace view of the Azure extension
+		○ 
+	• At some point you will have to setup your project to work with VSCode, which should prompt you to do so with the above steps.
+	• If for some reason, you don't have the Azure Functions side bar showing up for you to follow these instructions, you can use the cli to make it work.
+		○ func init
+		○ Func new
+	• If you have an error looking something like this:
+		○ 
+		○ It means that it's getting confused as to with version of the sdk to use b/c you have multiples installed
+		○ Run => dotnet --list-sdks
+			§ 
+			§ Then choose which sdk you want to use.  In my case I want 3.1.419
+			§ Now run =>  dotnet new globaljson and update the version in that file with the version of the sdk you want to use
+			§ Once you have it updated it knows which version to use, run the `func new` command again and it should run fine
+
+
 ## Folder Structure
 
 Notice this doesn't follow our similar pattern of having an iac and src folder as siblings under the root folder.

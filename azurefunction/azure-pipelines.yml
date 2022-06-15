@@ -21,7 +21,7 @@ variables:
   RESOURCE_GROUP_NAME: 'red-scus-demo-rg'
   LOCATION_NAME: 'southcentralus'
   LOCATION_PREFIX: 'scus'
-  MAIN_TEMPLATE_FILE_LOCATION: '$(System.ArtifactsDirectory)/app-iac/azurefunctions/iac/main.bicep'
+  MAIN_TEMPLATE_FILE_LOCATION: '$(System.ArtifactsDirectory)/app-iac/azurefunction/iac/main.bicep'
 
 stages:
 - stage: Build
