@@ -72,50 +72,9 @@ To run the project locally, you will need to do the following:
 The `azure-pipelines.yml` file represents an example of how you can build and deploy (CI/CD) this standard logic app into a lower and higher level environment from your source control repo.  This is fairly straight-forward pipeline, but I'll call out some things below to notice. I created this using the [documentation created by Functions team](https://docs.microsoft.com/en-us/azure/azure-functions/create-first-function-vs-code-csharp?tabs=in-process)
 
 - The overall flow of the `azure-pipelines.yml` file is to package up the files that will be used to deploy the infrastructure and the code into artifacts, then deploy them to Azure.
-  - The infrastructure piece is using Bicep templates and is stored in the `iac` folder.  This is all the templates you will need to create all the resources you need to stand-up a Logic App (standard, single-tenant).
-  - The code piece is stored in teh `src` folder and what is getting archived into a `{BuildId}.zip` file that gets deployed to Azure.
-
-#### Transform Managed API Connections
-
-For managed API connections we are manipulating the `connections.json` file in the `{BuildId}.zip` archive by using the [File Transform task using JSON variable substitution](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/transforms-variable-substitution?view=azure-devops&tabs=yaml#json-variable-substitution). The basic usage pattern is that you supply variables using 'dot' notation for the objects and the file transform updates the values within the file.
-
->*For example*, let's say you have a `.json` file that looks like this and you wanted to replace the type value:
-
-```json
-{
-  {
-  "managedApiConnections": {
-      "authentication": {
-        "type": "Raw"
-      }
-    }
-  }
-}
-
-```
-
->Yaml code:
-
-```yaml
-# setting variables for the connections.json file that need to be transformed to work in Azure
-  variables:
-    managedApiConnections.authentication.type: 'ManagedServiceIdentity'
-
-# Update connections.json via FileTransform task using variables above
-    - task: FileTransform@1
-      displayName: 'File transformation: connections.json'
-      inputs:
-        folderPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-        targetFiles: '**/connections.json'
-        fileType: json
-
-```
-
-#### Transform Azure Functions Connections
-
-*comming soon*
-
+  - The infrastructure piece is using Bicep templates and is stored in the `iac` folder.  This is all the templates you will need to create all the resources you need to stand-up a Functions App.  I am reusing an existing storage account which is why you will see the `STORAGE_ACCOUNT_NAME` variable in the `.yml` file.
+  - The code piece is stored in the `publish_output` folder that was created when I used the Publish task to publish the app.  That is what is getting archived into a `build${BuildId}.zip` file that gets deployed to Azure.
 
 #### Parameters
 
-*comming soon*
+*will be updated soon*
