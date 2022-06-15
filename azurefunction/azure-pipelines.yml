@@ -35,12 +35,14 @@ stages:
     - script: |
         dotnet restore
         dotnet build --configuration Release
+        ls -ltr
+        ls -ltr azurefunction
 
     - task: DotNetCoreCLI@2
       inputs:
         command: publish
         arguments: '--configuration Release --output publish_output'
-        projects: 'azurefunction/*.csproj'
+        projects: '**/azurefunction/*.csproj'
         publishWebProjects: false
         modifyOutputPath: false
         zipAfterPublish: false
