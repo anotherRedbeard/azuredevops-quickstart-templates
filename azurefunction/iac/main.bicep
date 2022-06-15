@@ -4,9 +4,6 @@ param appName string
 @description('Location prefix that you will use as part of the naming convention')
 param location_prefix string
 
-@description('Name of the storage account')
-param storageAccountName string
-
 @description('Storage Account type')
 @allowed([
   'Standard_LRS'
@@ -35,6 +32,7 @@ param runtime string = 'dotnet'
 var functionAppName = 'red-${location_prefix}-${appName}-fn-${env}'
 var hostingPlanName = 'red-${location_prefix}-${appName}-asp-${env}'
 var applicationInsightsName = 'red-${location_prefix}-${appName}-ai-${env}'
+var storageAccountName = 'st${appName}${env}9'
 var functionWorkerRuntime = runtime
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
