@@ -17,7 +17,7 @@ pool:
 variables:
   ARCHIVE_FOLDER: 'archive'
   SERVICE_CONNECTION: 'QuickStartTemplates-AzureServiceConnection'
-  FUNCTION_APP_NAME: 'demoFunctionApp'
+  FUNCTION_APP_NAME: 'demoFuncApp'
   RESOURCE_GROUP_NAME: 'red-scus-demo-rg'
   LOCATION_NAME: 'southcentralus'
   LOCATION_PREFIX: 'scus'
