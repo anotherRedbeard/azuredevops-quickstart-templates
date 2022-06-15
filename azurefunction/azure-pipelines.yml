@@ -64,7 +64,7 @@ stages:
 
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        targetPath: '$(Build.ArtifactStagingDirectory)/build$(Build.BuildId).zip'
         artifact: 'app-src'
         publishLocation: 'pipeline'
 
