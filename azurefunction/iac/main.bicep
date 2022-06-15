@@ -1,5 +1,8 @@
 @description('The name of the function app that you wish to create.')
-param appName string = 'fnapp${uniqueString(resourceGroup().id)}'
+param appName string
+
+@description('Location prefix that you will use as part of the naming convention')
+param location_prefix string
 
 @description('Storage Account type')
 @allowed([
@@ -13,7 +16,10 @@ param storageAccountType string = 'Standard_LRS'
 param location string = resourceGroup().location
 
 @description('Location for Application Insights')
-param appInsightsLocation string
+param appInsightsLocation string = resourceGroup().location
+
+@description('Environment you are deploying to')
+param env string = 'dev'
 
 @description('The language worker runtime to load in the function app.')
 @allowed([
@@ -23,10 +29,10 @@ param appInsightsLocation string
 ])
 param runtime string = 'node'
 
-var functionAppName = appName
-var hostingPlanName = appName
-var applicationInsightsName = appName
-var storageAccountName = '${uniqueString(resourceGroup().id)}azfunctions'
+var functionAppName = 'red-${location_prefix}-${appName}-fn-${env}'
+var hostingPlanName = 'red-${location_prefix}-${appName}-asp-${env}'
+var applicationInsightsName = 'red-${location_prefix}-${appName}-ai-${env}'
+var storageAccountName = 'st${appName}${env}'
 var functionWorkerRuntime = runtime
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
