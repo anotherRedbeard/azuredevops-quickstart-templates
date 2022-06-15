@@ -112,3 +112,5 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
     Request_Source: 'rest'
   }
 }
+
+output function_app string = functionApp.name
