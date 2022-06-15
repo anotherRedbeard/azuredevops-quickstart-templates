@@ -19,8 +19,8 @@ variables:
   SERVICE_CONNECTION: 'QuickStartTemplates-AzureServiceConnection'
   FUNCTION_APP_NAME: 'demoFuncApp'
   RESOURCE_GROUP_NAME: 'red-scus-demo-rg'
-  LOCATION_NAME: 'southcentralus'
-  LOCATION_PREFIX: 'scus'
+  LOCATION_NAME: 'centralus'
+  LOCATION_PREFIX: 'cus'
   MAIN_TEMPLATE_FILE_LOCATION: '$(System.ArtifactsDirectory)/app-iac/azurefunction/iac/main.bicep'
 
 stages:
