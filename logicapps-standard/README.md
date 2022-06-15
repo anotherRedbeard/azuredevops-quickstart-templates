@@ -76,9 +76,9 @@ For managed API connections we are manipulating the `connections.json` file in t
 
 #### Transform Azure Functions Connections
 
-*comming soon*
+*work in progress*
 
 
 #### Parameters
 
-*comming soon*
+*work in progress*
