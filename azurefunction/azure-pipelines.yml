@@ -33,7 +33,7 @@ stages:
     steps:
     
     - script: |
-        dotnet restore
+        dotnet restore ./azurefunction
         dotnet build --configuration Release ./azurefunction/*.csproj
         ls -ltr
         ls -ltr azurefunction
@@ -51,7 +51,7 @@ stages:
       displayName: Copy IAC Files
       inputs:
         Contents: |
-          **/azurefunctions/iac/*
+          **/azurefunction/iac/*
         TargetFolder: $(ARCHIVE_FOLDER)/iac
 
     # Archive everything in the 'zip' folder for the source
@@ -64,7 +64,7 @@ stages:
 
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$(Build.ArtifactStagingDirectory)/build$(Build.BuildId).zip'
+        targetPath: '$(System.DefaultWorkingDirectory)/build$(Build.BuildId).zip'
         artifact: 'app-src'
         publishLocation: 'pipeline'
 
