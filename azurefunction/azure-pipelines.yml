@@ -34,7 +34,7 @@ stages:
     
     - script: |
         dotnet restore
-        dotnet build --configuration Release
+        dotnet build --configuration Release ./azurefunction/*.csproj
         ls -ltr
         ls -ltr azurefunction
 
