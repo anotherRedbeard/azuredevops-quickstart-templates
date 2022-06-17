@@ -15,21 +15,6 @@
                     "path": "/v2/storageAccounts/@{encodeURIComponent(encodeURIComponent('AccountNameFromSettings'))}/queues/@{encodeURIComponent('logicappmessages')}/messages"
                 },
                 "runAfter": {}
-            },
-            "Response": {
-                "type": "Response",
-                "kind": "http",
-                "inputs": {
-                    "statusCode": 200,
-                    "body": {
-                        "message": "Successfully put message on queue"
-                    }
-                },
-                "runAfter": {
-                    "Put_a_message_on_a_queue_(V2)": [
-                        "Succeeded"
-                    ]
-                }
             }
         },
         "triggers": {
