@@ -2,23 +2,6 @@
     "definition": {
         "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
         "actions": {
-            "Compose": {
-                "type": "Compose",
-                "inputs": "@triggerOutputs()['queries']",
-                "runAfter": {}
-            },
-            "Response": {
-                "type": "Response",
-                "kind": "http",
-                "inputs": {
-                    "statusCode": 200
-                },
-                "runAfter": {
-                    "Put_a_message_on_a_queue_(V2)": [
-                        "Succeeded"
-                    ]
-                }
-            },
             "Put_a_message_on_a_queue_(V2)": {
                 "type": "ApiConnection",
                 "inputs": {
@@ -28,11 +11,22 @@
                         }
                     },
                     "method": "post",
-                    "body": "@{outputs('Compose')}",
+                    "body": "@{triggerOutputs()['queries']}",
                     "path": "/v2/storageAccounts/@{encodeURIComponent(encodeURIComponent('AccountNameFromSettings'))}/queues/@{encodeURIComponent('logicappmessages')}/messages"
                 },
+                "runAfter": {}
+            },
+            "Response": {
+                "type": "Response",
+                "kind": "http",
+                "inputs": {
+                    "statusCode": 200,
+                    "body": {
+                        "message": "Successfully put message on queue"
+                    }
+                },
                 "runAfter": {
-                    "Compose": [
+                    "Put_a_message_on_a_queue_(V2)": [
                         "Succeeded"
                     ]
                 }
