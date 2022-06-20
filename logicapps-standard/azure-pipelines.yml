@@ -80,14 +80,14 @@ stages:
       displayName: Publish dev artifacts zip
       inputs:
         targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-dev.zip'
-        artifact: 'app-src'
+        artifact: 'app-src-dev'
         publishLocation: 'pipeline'
 
     - task: PublishPipelineArtifact@1
       displayName: Publish prd artifacts zip
       inputs:
         targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-prd.zip'
-        artifact: 'app-src'
+        artifact: 'app-src-prd'
         publishLocation: 'pipeline'
 
     - task: PublishPipelineArtifact@1
@@ -132,7 +132,7 @@ stages:
                 azureSubscription: $(SERVICE_CONNECTION)
                 appType: 'workflowapp'
                 appName: $(PROVISIONED_LA_NAME)
-                package: '$(System.ArtifactsDirectory)/app-src/*-dev.zip'
+                package: '$(System.ArtifactsDirectory)/app-src-dev/*-dev.zip'
                 deploymentMethod: 'zipDeploy'
 
 
@@ -172,5 +172,5 @@ stages:
                 azureSubscription: $(SERVICE_CONNECTION)
                 appType: 'workflowapp'
                 appName: $(PROVISIONED_LA_NAME)
-                package: '$(System.ArtifactsDirectory)/app-src/*-prd.zip'
+                package: '$(System.ArtifactsDirectory)/app-src-prd/*-prd.zip'
                 deploymentMethod: 'zipDeploy'
