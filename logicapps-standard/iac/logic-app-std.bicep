@@ -148,7 +148,7 @@ resource logicAppConnection 'Microsoft.Web/connections@2016-06-01' = {
     }
     testLinks: [ 
       {
-        requestUri: '${az.environment().resourceManager}/subscriptions/${subscription().id}/resourceGroups/${resourceGroup().name}/providers/Microsoft.Web/connections/azurequeues-${environment}/extensions/proxy/testConnection?api-version=2016-06-01'
+        requestUri: '${az.environment().resourceManager}/subscriptions/${subscription().id}/resourceGroups/${resourceGroup().name}/providers/Microsoft.Web/connections/azurequeues/extensions/proxy/testConnection?api-version=2016-06-01'
         method: 'get'
       }
     ]
