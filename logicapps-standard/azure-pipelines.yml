@@ -52,7 +52,7 @@ stages:
 
     # Move the dev connections file to overwrite the connections file
     - script: |
-          mv $(ARCHIVE_FOLDER)/src/connections.dev.json $(ARCHIVE_FOLDER)/src/connections.json
+          mv $(ARCHIVE_FOLDER)/src/logicapps-standard/src/connections.dev.json $(ARCHIVE_FOLDER)/src/logicapps-standard/src/connections.json
       displayName: 'Moving dev connections/paramteters'
       
     # Archive everything in the 'zip' folder
@@ -65,7 +65,7 @@ stages:
 
     # Move the prd connections file to overwrite the connections file
     - script: |
-          mv $(ARCHIVE_FOLDER)/src/connections.prd.json $(ARCHIVE_FOLDER)/src/connections.json
+          mv $(ARCHIVE_FOLDER)/src/logicapps-standard/src/connections.prd.json $(ARCHIVE_FOLDER)/src/logicapps-standard/src/connections.json
       displayName: 'Moving prd connections/paramteters'
       
     # Archive everything in the 'zip' folder
