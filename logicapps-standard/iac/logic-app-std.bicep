@@ -138,7 +138,7 @@ resource logicAppConnection 'Microsoft.Web/connections@2016-06-01' = {
     displayName: 'connect-to-azurequeue'
     parameterValues: { }
     api: {
-      name: 'azurequeues-${environment}'
+      name: 'azurequeues'
       displayName: 'Azure Queues'
       description: 'Azure Queue storage provides cloud messaging between application components. Queue storage also supports managing asynchronous tasks and building process work flows.'
       iconUri: 'https://connectoricons-prod.azureedge.net/releases/v1.0.1546/1.0.1546.2665/azurequeues/icon.png'
