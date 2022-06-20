@@ -74,6 +74,8 @@ For managed API connections we are manipulating the `connections.json` file in t
 
 ```
 
+The last thing you will need to do is to go out to the Azure Portal the first time a new connection is created and create an access policy for it.  The zip deployment does not create these settings for you so you have to create it.  See [After release to Azure section of the doc](https://docs.microsoft.com/en-us/azure/logic-apps/set-up-devops-deployment-single-tenant-azure-logic-apps?tabs=azure-devops#after-release-to-azure).
+
 #### Transform Azure Functions Connections
 
 *work in progress*
