@@ -143,7 +143,7 @@ resource logicAppConnection 'Microsoft.Web/connections@2016-06-01' = {
       description: 'Azure Queue storage provides cloud messaging between application components. Queue storage also supports managing asynchronous tasks and building process work flows.'
       iconUri: 'https://connectoricons-prod.azureedge.net/releases/v1.0.1546/1.0.1546.2665/azurequeues/icon.png'
       brandColor: '#0072C6'
-      id: '${subscription().id}/providers/Microsoft.Web/locations/${location}/managedApis/azurequeues-${environment}'
+      id: '${subscription().id}/providers/Microsoft.Web/locations/${location}/managedApis/azurequeues'
       type: 'Microsoft.Web/locations/managedApis'
     }
     testLinks: [ 
