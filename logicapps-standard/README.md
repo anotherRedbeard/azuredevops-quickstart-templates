@@ -26,6 +26,10 @@ To run the project locally, you will need to do the following:
   }
   ```
 
+### Create Azure Queue
+
+This example uses a Queue within a storage account.  I am working on getting this to be part of the infrastructure deployment, but for now you will need to make sure and create a new queue called `logicappmessages` in the storage account that you are targeting.  Locally it would be your azurite account, in the Azure portal it would be the Azure storage account.
+
 ### Managed API Connections
 
 This project uses an Azure Queue inside of a storage account.  You can see the managed api connection in the `connections.json` file.  Inside your `local.settings.json` file you will see the "azurequeues-connectionKey" which is used to store a temporary ({n} days) token that you can use to connect to the queue while you are creating your logic app. Most likely you will need to re-create this connection in the workflow designer the first time you use this.  When this project is deployed to Azure it will be using a [managed identity](https://docs.microsoft.com/en-us/azure/logic-apps/create-managed-service-identity?tabs=standard), so once this is deployed that token won't be used.
@@ -74,7 +78,7 @@ For managed API connections we are manipulating the `connections.json` file in t
 
 ```
 
-The last thing you will need to do is to go out to the Azure Portal the first time a new connection is created and create an access policy for it.  The zip deployment does not create these settings for you so you have to create it.  See [After release to Azure section of the doc](https://docs.microsoft.com/en-us/azure/logic-apps/set-up-devops-deployment-single-tenant-azure-logic-apps?tabs=azure-devops#after-release-to-azure).
+The last thing you will need to do is to go out to the Azure Portal the first time a new connection is created and create an access policy for it.  The zip deployment does not create these settings for you so you have to create it and give the service principal (managed identity) of the Logic App Contributor to the queue in the storage account (since this example is connecting to an Azure Storage Queue).  See [After release to Azure section of the doc](https://docs.microsoft.com/en-us/azure/logic-apps/set-up-devops-deployment-single-tenant-azure-logic-apps?tabs=azure-devops#after-release-to-azure).
 
 #### Transform Azure Functions Connections
 
