@@ -134,6 +134,7 @@ properties: {
 resource logicAppConnection 'Microsoft.Web/connections@2016-06-01' = {
   name: 'azurequeues-${environment}'
   location: location
+  kind: 'V2'
   properties: {
     displayName: 'connect-to-azurequeue'
     parameterValues: {
