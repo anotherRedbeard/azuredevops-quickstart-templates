@@ -1,0 +1,6 @@
+{
+  "StorageAccountName": {
+    "type": "String",
+    "value": "ststatelessdev"
+  }
+}
