@@ -7,7 +7,7 @@
                 "inputs": {
                     "host": {
                         "connection": {
-                            "referenceName": "azurequeues"
+                            "referenceName": "azurequeues_1"
                         }
                     },
                     "method": "post",

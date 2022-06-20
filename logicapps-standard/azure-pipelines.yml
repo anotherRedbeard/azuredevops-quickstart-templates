@@ -27,12 +27,6 @@ stages:
 - stage: Build
   displayName: Build and create artifact
 
-  # setting variables for the connections.json file that need to be transformed to work in Azure
-  variables:
-    managedApiConnections.azurequeues.authentication.type: 'ManagedServiceIdentity'
-    managedApiConnections.azurequeues.authentication.scheme: ''
-    managedApiConnections.azurequeues.authentication.parameter: ''
-    
   jobs:
   - job: Build
     displayName: Build
@@ -56,26 +50,43 @@ stages:
           **/logicapps-standard/iac/*
         TargetFolder: $(ARCHIVE_FOLDER)/iac
 
+    # Move the dev connections file to overwrite the connections file
+    - script: |
+          mv $(ARCHIVE_FOLDER)/src/connections.dev.json $(ARCHIVE_FOLDER)/src/connections.json
+      displayName: 'Moving dev connections/paramteters'
+      
     # Archive everything in the 'zip' folder
     - task: ArchiveFiles@2
       inputs:
         rootFolderOrFile: $(ARCHIVE_FOLDER)/src/logicapps-standard/src
         includeRootFolder: false
         archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-dev.zip'
 
-    # Update connections.json via FileTransform task using variables above
-    - task: FileTransform@1
-      displayName: 'File transformation: connections.json'
+    # Move the prd connections file to overwrite the connections file
+    - script: |
+          mv $(ARCHIVE_FOLDER)/src/connections.prd.json $(ARCHIVE_FOLDER)/src/connections.json
+      displayName: 'Moving prd connections/paramteters'
+      
+    # Archive everything in the 'zip' folder
+    - task: ArchiveFiles@2
       inputs:
-        folderPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-        targetFiles: '**/connections.json'
-        fileType: json
+        rootFolderOrFile: $(ARCHIVE_FOLDER)/src/logicapps-standard/src
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-prd.zip'
 
-  
     - task: PublishPipelineArtifact@1
+      displayName: Publish dev artifacts zip
       inputs:
-        targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-dev.zip'
+        artifact: 'app-src'
+        publishLocation: 'pipeline'
+
+    - task: PublishPipelineArtifact@1
+      displayName: Publish prd artifacts zip
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-prd.zip'
         artifact: 'app-src'
         publishLocation: 'pipeline'
 
@@ -121,7 +132,7 @@ stages:
                 azureSubscription: $(SERVICE_CONNECTION)
                 appType: 'workflowapp'
                 appName: $(PROVISIONED_LA_NAME)
-                package: '$(System.ArtifactsDirectory)/app-src/*.zip'
+                package: '$(System.ArtifactsDirectory)/app-src/*-dev.zip'
                 deploymentMethod: 'zipDeploy'
 
 
@@ -161,5 +172,5 @@ stages:
                 azureSubscription: $(SERVICE_CONNECTION)
                 appType: 'workflowapp'
                 appName: $(PROVISIONED_LA_NAME)
-                package: '$(System.ArtifactsDirectory)/app-src/*.zip'
+                package: '$(System.ArtifactsDirectory)/app-src/*-prd.zip'
                 deploymentMethod: 'zipDeploy'
