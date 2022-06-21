@@ -23,6 +23,7 @@ variables:
   LOCATION_PREFIX: 'cus'
   LASTD_TEMPLATE_FILE_LOCATION: '$(System.ArtifactsDirectory)/app-iac/logicapps-standard/iac/main.bicep'
   RUNTIME_URL: ''
+  managedApiConnections.azurequeues.connectionRuntimeUrl: '$(RUNTIME_URL)'
 
 stages:
 - stage: Build
@@ -100,8 +101,6 @@ stages:
 - stage: DevDeploy
   displayName: Deploy to Dev
   dependsOn: Build
-  variables:
-    managedApiConnections.azurequeues.connectionRuntimeUrl: '$(RUNTIME_URL)'
   jobs:
   - deployment: 'DeploytoDev'
     environment: 'dev'
@@ -128,8 +127,6 @@ stages:
                   az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(LASTD_TEMPLATE_FILE_LOCATION) --parameters logic_app_name=$(LOGIC_APP_NAME) location_prefix=$(LOCATION_PREFIX) environment=dev
                   echo "##vso[task.setvariable variable=PROVISIONED_LA_NAME]$(az deployment group show --resource-group $(RESOURCE_GROUP_NAME)-dev --name main  --query properties.outputs.logic_app.value  --output tsv)"
                   echo "##vso[task.setvariable variable=RUNTIME_URL]$(az deployment group show --resource-group $(RESOURCE_GROUP_NAME)-dev --name main  --query properties.outputs.connectionRuntimeUrl.value  --output tsv)"
-                  echo $(managedApiConnections.azurequeues.connectionRuntimeUrl)
-                  echo $(RUNTIME_URL)
 
             # update connections.json via FileTransorm tsk using variables
             - task: FileTransform@1
@@ -180,6 +177,14 @@ stages:
                   az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-prd --template-file $(LASTD_TEMPLATE_FILE_LOCATION) --parameters logic_app_name=$(LOGIC_APP_NAME) location_prefix=$(LOCATION_PREFIX) environment=prd
                   echo "##vso[task.setvariable variable=PROVISIONED_LA_NAME]$(az deployment group show --resource-group $(RESOURCE_GROUP_NAME)-prd --name main  --query properties.outputs.logic_app.value  --output tsv)"
                   echo "##vso[task.setvariable variable=RUNTIME_URL]$(az deployment group show --resource-group $(RESOURCE_GROUP_NAME)-prd --name main  --query properties.outputs.connectionRuntimeUrl.value  --output tsv)"
+
+            # update connections.json via FileTransorm tsk using variables
+            - task: FileTransform@1
+              displayName: 'File transformation: connections.json'
+              inputs:
+                folderPath: '$(System.ArtifactsDirectory)/app-src-dev/*-prd.zip'
+                targetFiles: '**/connections.json'
+                fileType: json
 
             # deploy zip to app service
             - task: AzureFunctionApp@1  
