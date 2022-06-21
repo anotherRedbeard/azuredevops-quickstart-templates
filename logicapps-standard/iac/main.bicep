@@ -46,3 +46,4 @@ module logic './logic-app-std.bicep' = {
 
 output logic_app string = logic.outputs.app
 output logic_plan string = logic.outputs.plan
+output connectionRuntimeUrl string = logic.outputs.connectionRuntimeUrl
