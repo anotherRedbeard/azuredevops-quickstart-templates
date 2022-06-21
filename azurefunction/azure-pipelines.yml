@@ -103,7 +103,7 @@ stages:
 
             # deploy zip to app service
             - task: AzureFunctionApp@1  
-              displayName: Deploy Logic App
+              displayName: Deploy Function App
               inputs:
                 azureSubscription: $(SERVICE_CONNECTION)
                 appType: 'workflowapp'
@@ -144,6 +144,7 @@ stages:
 
             # deploy zip to app service
             - task: AzureFunctionApp@1  
+              displayName: Deploy Function App
               inputs:
                 azureSubscription: $(SERVICE_CONNECTION)
                 appType: 'workflowapp'
