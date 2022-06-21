@@ -101,7 +101,7 @@ stages:
   displayName: Deploy to Dev
   dependsOn: Build
   variables:
-    managedApiConnections.connectionRuntimeUrl: '$(RUNTIME_URL)'
+    managedApiConnections.azurequeues.connectionRuntimeUrl: '$(RUNTIME_URL)'
   jobs:
   - deployment: 'DeploytoDev'
     environment: 'dev'
@@ -128,6 +128,8 @@ stages:
                   az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(LASTD_TEMPLATE_FILE_LOCATION) --parameters logic_app_name=$(LOGIC_APP_NAME) location_prefix=$(LOCATION_PREFIX) environment=dev
                   echo "##vso[task.setvariable variable=PROVISIONED_LA_NAME]$(az deployment group show --resource-group $(RESOURCE_GROUP_NAME)-dev --name main  --query properties.outputs.logic_app.value  --output tsv)"
                   echo "##vso[task.setvariable variable=RUNTIME_URL]$(az deployment group show --resource-group $(RESOURCE_GROUP_NAME)-dev --name main  --query properties.outputs.connectionRuntimeUrl.value  --output tsv)"
+                  echo $(managedApiConnections.azurequeues.connectionRuntimeUrl)
+                  echo $(RUNTIME_URL)
 
             # update connections.json via FileTransorm tsk using variables
             - task: FileTransform@1
