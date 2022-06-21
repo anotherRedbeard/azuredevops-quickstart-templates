@@ -162,3 +162,4 @@ resource logicAppConnection 'Microsoft.Web/connections@2016-06-01' = {
 // Return the Logic App service name and farm name
 output app string = site.name
 output plan string = plan.name
+output connectionRuntimeUrl string = reference(logicAppConnection.id, logicAppConnection.apiVersion, 'full').properties.connectionRuntimeUrl
