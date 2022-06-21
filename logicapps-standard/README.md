@@ -44,7 +44,7 @@ The `azure-pipelines.yml` file represents an example of how you can build and de
 
 #### Transform Managed API Connections
 
-For managed API connections we are manipulating the `connections.json` file in the `{BuildId}.zip` archive by using the [File Transform task using JSON variable substitution](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/transforms-variable-substitution?view=azure-devops&tabs=yaml#json-variable-substitution). The basic usage pattern is that you supply variables using 'dot' notation for the objects and the file transform updates the values within the file.
+For managed API connections we are manipulating the `connections.json` file in the `{BuildId}.zip` archive by creating an artifact for each environment (dev, test, prod, etc).  We are also using the [File Transform task using JSON variable substitution](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/transforms-variable-substitution?view=azure-devops&tabs=yaml#json-variable-substitution) to replace some of the properties at 'run-time' that can't be statically defined in the different `connections.<env>.json` files. The basic usage pattern is that you supply variables using 'dot' notation for the objects and the file transform updates the values within the file.
 
 >*For example*, let's say you have a `.json` file that looks like this and you wanted to replace the type value:
 
