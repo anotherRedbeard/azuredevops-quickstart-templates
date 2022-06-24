@@ -139,7 +139,7 @@ resource logicAppConnection 'Microsoft.Web/connections@2016-06-01' = {
     displayName: 'connect-to-azurequeue-${environment}'
     parameterValues: {
       storageaccount: storage.name
-      sharedkey: storage.listKeys().keys[0].value
+      accessKey: storage.listKeys().keys[0].value
      }
     api: {
       name: 'azurequeues'
