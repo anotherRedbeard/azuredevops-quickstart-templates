@@ -31,7 +31,7 @@ properties: {
 
 // Queue in storage account
 resource symbolicname 'Microsoft.Storage/storageAccounts/queueServices/queues@2021-09-01' = {
-  name: '/default/logicappmessages'
+  name: '${storage.name}/default/logicappmessages'
   dependsOn: [
     storage
   ]
