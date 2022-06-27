@@ -29,6 +29,17 @@ properties: {
 }
 }
 
+// Queue in storage account
+resource symbolicname 'Microsoft.Storage/storageAccounts/queueServices/queues@2021-09-01' = {
+  name: '/default/logicappmessages'
+  dependsOn: [
+    storage
+  ]
+  properties: {
+    metadata: {}
+  }
+}
+
 // Dedicated app plan for the service
 resource plan 'Microsoft.Web/serverfarms@2021-02-01' = {
 name: 'red-${location_prefix}-${name}-asp-${environment}'
