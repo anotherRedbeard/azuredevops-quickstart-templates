@@ -17,23 +17,24 @@ param location_prefix string
 
 // Storage account for the service
 resource storage 'Microsoft.Storage/storageAccounts@2019-06-01' = {
-name: 'st${name}${environment}'
-location: location
-kind: 'StorageV2'
-sku: {
-  name: 'Standard_GRS'
-}
-properties: {
-  supportsHttpsTrafficOnly: true
-  minimumTlsVersion: 'TLS1_2'
-}
-}
-
-// Queue in storage account
-resource symbolicname 'Microsoft.Storage/storageAccounts/queueServices/queues@2021-09-01' = {
-  name: '${storage.name}/default/logicappmessages'
+  name: 'st${name}${environment}'
+  location: location
+  kind: 'StorageV2'
+  sku: {
+    name: 'Standard_GRS'
+  }
   properties: {
-    metadata: {}
+    supportsHttpsTrafficOnly: true
+    minimumTlsVersion: 'TLS1_2'
+    
+  }
+
+  resource queueService 'queueServices' = {
+    name: 'default'
+
+    resource queue 'queues' = {
+      name: 'logicappmessages'
+    }
   }
 }
 
