@@ -27,7 +27,7 @@ namespace azurefunction
 
             string responseMessage = string.IsNullOrEmpty(name)
                 ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}, nice to meet you.";
+                : $"Hello, {name}, nice to meet you again.";
 
             return new OkObjectResult(responseMessage);
         }
