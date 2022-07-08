@@ -1,0 +1,157 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+    - azurefunction-python
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  ARCHIVE_FOLDER: 'archive'
+  SERVICE_CONNECTION: 'QuickStartTemplates-AzureServiceConnection'
+  FUNCTION_APP_NAME: 'pyfunc'
+  RESOURCE_GROUP_NAME: 'red-cus-demo-rg'
+  LOCATION_NAME: 'centralus'
+  LOCATION_PREFIX: 'cus'
+  MAIN_TEMPLATE_FILE_LOCATION: '$(System.ArtifactsDirectory)/app-iac/azurefunction-python/iac/main.bicep'
+
+stages:
+- stage: Build
+  displayName: Build and create artifact
+
+  jobs:
+  - job: Build
+    displayName: Build
+    steps:
+      - bash: |
+        if [ -f extensions.csproj ]
+        then
+            dotnet build extensions.csproj --runtime ubuntu.16.04-x64 --output ./bin
+        fi
+      workingDirectory: $(workingDirectory)
+      displayName: 'Build extensions'
+
+    - task: UsePythonVersion@0
+      displayName: 'Use Python 3.9'
+      inputs:
+        versionSpec: 3.9
+
+    - bash: |
+        pip install --target="./.python_packages/lib/site-packages" -r ./requirements.txt
+      workingDirectory: $(workingDirectory)
+      displayName: 'Install application dependencies'
+    
+    - task: CopyFiles@2
+      displayName: Copy IAC Files
+      inputs:
+        Contents: |
+          **/azurefunction-dotnet/iac/*
+        TargetFolder: $(ARCHIVE_FOLDER)/iac
+
+    # Archive everything in the 'zip' folder for the source
+    - task: ArchiveFiles@2
+      displayName: "Archive files"
+      inputs:
+        rootFolderOrFile: "$(workingDirectory)"
+        includeRootFolder: false
+        archiveFile: "$(System.DefaultWorkingDirectory)/build$(Build.BuildId).zip"
+
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(System.DefaultWorkingDirectory)/build$(Build.BuildId).zip'
+        artifact: 'app-src'
+        publishLocation: 'pipeline'
+
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(ARCHIVE_FOLDER)/iac'
+        artifact: 'app-iac'
+        publishLocation: 'pipeline'
+
+- stage: DevDeploy
+  displayName: Deploy to Dev
+  dependsOn: Build
+  jobs:
+  - deployment: 'DeploytoDev'
+    environment: 'dev'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            # download all artifacts 
+            - task: DownloadPipelineArtifact@2
+              inputs:
+                buildType: 'current'
+                downloadPath: '$(System.ArtifactsDirectory)'
+
+            # run Azure CLI command to deploy bicep template
+            - task: AzureCLI@2
+              displayName: Deploy Bicep file
+              inputs:
+                azureSubscription: $(SERVICE_CONNECTION)
+                scriptType: bash
+                scriptLocation: inlineScript
+                inlineScript: |
+                  az --version
+                  az group create --name $(RESOURCE_GROUP_NAME)-dev --location $(LOCATION_NAME)
+                  az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-dev --template-file $(MAIN_TEMPLATE_FILE_LOCATION) --parameters location_prefix=$(LOCATION_PREFIX) appName=$(FUNCTION_APP_NAME) env=dev
+                  echo "##vso[task.setvariable variable=PROVISIONED_LA_NAME]$(az deployment group show --resource-group $(RESOURCE_GROUP_NAME)-dev --name main  --query properties.outputs.function_app.value  --output tsv)"
+
+            # deploy zip to app service
+            - task: AzureFunctionApp@1  
+              displayName: Deploy Function App
+              inputs:
+                azureSubscription: $(SERVICE_CONNECTION)
+                appType: 'workflowapp'
+                appName: $(PROVISIONED_LA_NAME)
+                package: '$(System.ArtifactsDirectory)/app-src/*.zip'
+                deploymentMethod: 'zipDeploy'
+
+
+- stage: ProdDeploy
+  displayName: Deploy to Prod
+  dependsOn: DevDeploy
+  jobs:
+  - deployment: 'DeploytoPrd'
+    environment: 'prd'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+            # download all artifacts 
+            - task: DownloadPipelineArtifact@2
+              inputs:
+                buildType: 'current'
+                downloadPath: '$(System.ArtifactsDirectory)'
+
+            # run Azure CLI command to deploy bicep template
+            - task: AzureCLI@2
+              displayName: Deploy Bicep file
+              inputs:
+                azureSubscription: $(SERVICE_CONNECTION)
+                scriptType: bash
+                scriptLocation: inlineScript
+                inlineScript: |
+                  az --version
+                  az group create --name $(RESOURCE_GROUP_NAME)-prd --location $(LOCATION_NAME)
+                  az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-prd --template-file $(MAIN_TEMPLATE_FILE_LOCATION) --parameters location_prefix=$(LOCATION_PREFIX) appName=$(FUNCTION_APP_NAME) env=prd
+                  echo "##vso[task.setvariable variable=PROVISIONED_LA_NAME]$(az deployment group show --resource-group $(RESOURCE_GROUP_NAME)-prd --name main  --query properties.outputs.function_app.value  --output tsv)"
+
+            # deploy zip to app service
+            - task: AzureFunctionApp@1  
+              displayName: Deploy Function App
+              inputs:
+                azureSubscription: $(SERVICE_CONNECTION)
+                appType: 'workflowapp'
+                appName: $(PROVISIONED_LA_NAME)
+                package: '$(System.ArtifactsDirectory)/app-src/*.zip'
+                deploymentMethod: 'zipDeploy'
