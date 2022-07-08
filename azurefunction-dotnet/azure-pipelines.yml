@@ -9,7 +9,7 @@ trigger:
       - main
   paths:
     include:
-    - azurefunction
+    - azurefunction-dotnet
 
 pool:
   vmImage: ubuntu-latest
@@ -21,7 +21,7 @@ variables:
   RESOURCE_GROUP_NAME: 'red-cus-demo-rg'
   LOCATION_NAME: 'centralus'
   LOCATION_PREFIX: 'cus'
-  MAIN_TEMPLATE_FILE_LOCATION: '$(System.ArtifactsDirectory)/app-iac/azurefunction/iac/main.bicep'
+  MAIN_TEMPLATE_FILE_LOCATION: '$(System.ArtifactsDirectory)/app-iac/azurefunction-dotnet/iac/main.bicep'
 
 stages:
 - stage: Build
@@ -33,14 +33,14 @@ stages:
     steps:
     
     - script: |
-        dotnet restore ./azurefunction
-        dotnet build --configuration Release ./azurefunction/*.csproj
+        dotnet restore ./azurefunction-dotnet
+        dotnet build --configuration Release ./azurefunction-dotnet/*.csproj
 
     - task: DotNetCoreCLI@2
       inputs:
         command: publish
         arguments: '--configuration Release --output publish_output'
-        projects: '**/azurefunction/*.csproj'
+        projects: '**/azurefunction-dotnet/*.csproj'
         publishWebProjects: false
         modifyOutputPath: false
         zipAfterPublish: false
@@ -49,7 +49,7 @@ stages:
       displayName: Copy IAC Files
       inputs:
         Contents: |
-          **/azurefunction/iac/*
+          **/azurefunction-dotnet/iac/*
         TargetFolder: $(ARCHIVE_FOLDER)/iac
 
     # Archive everything in the 'zip' folder for the source
