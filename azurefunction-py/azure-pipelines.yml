@@ -22,6 +22,7 @@ variables:
   LOCATION_NAME: 'centralus'
   LOCATION_PREFIX: 'cus'
   MAIN_TEMPLATE_FILE_LOCATION: '$(System.ArtifactsDirectory)/app-iac/azurefunction-python/iac/main.bicep'
+  workingDirectory: '$(System.DefaultWorkingDirectory)/publish_output'
 
 stages:
 - stage: Build
