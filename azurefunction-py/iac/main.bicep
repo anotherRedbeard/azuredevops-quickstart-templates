@@ -48,11 +48,14 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
 resource hostingPlan 'Microsoft.Web/serverfarms@2021-03-01' = {
   name: hostingPlanName
   location: location
+  kind: 'linux'
   sku: {
     name: 'Y1'
     tier: 'Dynamic'
   }
-  properties: {}
+  properties: {
+    reserved: true //required for linux
+  }
 }
 
 resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
@@ -65,6 +68,7 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
   properties: {
     serverFarmId: hostingPlan.id
     siteConfig: {
+      linuxFxVersion: 'DOTNET|6.0' //required for linux
       appSettings: [
         {
           name: 'AzureWebJobsStorage'
