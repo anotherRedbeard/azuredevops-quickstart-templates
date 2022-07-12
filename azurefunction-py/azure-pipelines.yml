@@ -22,7 +22,7 @@ variables:
   LOCATION_NAME: 'centralus'
   LOCATION_PREFIX: 'cus'
   MAIN_TEMPLATE_FILE_LOCATION: '$(System.ArtifactsDirectory)/app-iac/azurefunction-python/iac/main.bicep'
-  workingDirectory: '$(System.DefaultWorkingDirectory)/publish_output'
+  workingDirectory: 'azurefunction-py'
 
 stages:
 - stage: Build
@@ -38,13 +38,8 @@ stages:
         versionSpec: 3.9
 
     - bash: |
-        pip install --target="./.python_packages/lib/site-packages" -r ./azurefunction-py/requirements.txt
-
-        pwd
-        ls -ltr
-        mkdir ${workingDirectory}
-        ls -ltr $(System.DefaultWorkingDirectory)
-      #workingDirectory: $(workingDirectory)
+        pip install --target="./.python_packages/lib/site-packages" -r ./requirements.txt
+      workingDirectory: $(workingDirectory)
       displayName: 'Install application dependencies'
     
     - task: CopyFiles@2
