@@ -38,12 +38,13 @@ stages:
         versionSpec: 3.9
 
     - bash: |
+        pip install --target="./.python_packages/lib/site-packages" -r ./requirements.txt
+        
         pwd
         ls -ltr
         mkdir ${workingDirectory}
         ls -ltr $(System.DefaultWorkingDirectory)
-        pip install --target="./.python_packages/lib/site-packages" -r ./requirements.txt
-      workingDirectory: $(workingDirectory)
+      #workingDirectory: $(workingDirectory)
       displayName: 'Install application dependencies'
     
     - task: CopyFiles@2
