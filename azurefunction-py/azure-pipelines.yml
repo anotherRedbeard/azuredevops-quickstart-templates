@@ -38,8 +38,8 @@ stages:
         versionSpec: 3.9
 
     - bash: |
-        pip install --target="./.python_packages/lib/site-packages" -r ./requirements.txt
-        
+        pip install --target="./.python_packages/lib/site-packages" -r ./acurefunction-py/requirements.txt
+
         pwd
         ls -ltr
         mkdir ${workingDirectory}
