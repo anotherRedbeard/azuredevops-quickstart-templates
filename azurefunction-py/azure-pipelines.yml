@@ -15,14 +15,14 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
+  workingDirectory: 'azurefunction-py'
   ARCHIVE_FOLDER: 'archive'
   SERVICE_CONNECTION: 'QuickStartTemplates-AzureServiceConnection'
   FUNCTION_APP_NAME: 'pyfunc'
   RESOURCE_GROUP_NAME: 'red-cus-demo-rg'
   LOCATION_NAME: 'centralus'
   LOCATION_PREFIX: 'cus'
-  MAIN_TEMPLATE_FILE_LOCATION: '$(System.ArtifactsDirectory)/app-iac/azurefunction-python/iac/main.bicep'
-  workingDirectory: 'azurefunction-py'
+  MAIN_TEMPLATE_FILE_LOCATION: '$(System.ArtifactsDirectory)/app-iac/$(workingDirectory)/iac/main.bicep'
 
 stages:
 - stage: Build
@@ -46,7 +46,7 @@ stages:
       displayName: Copy IAC Files
       inputs:
         Contents: |
-          **/azurefunction-dotnet/iac/*
+          **/$(workingDirectory)/iac/*
         TargetFolder: $(ARCHIVE_FOLDER)/iac
 
     # Archive everything in the 'zip' folder for the source
