@@ -26,8 +26,9 @@ param env string = 'dev'
   'node'
   'dotnet'
   'java'
+  'python'
 ])
-param runtime string = 'dotnet'
+param runtime string = 'python'
 
 var functionAppName = 'red-${location_prefix}-${appName}-fn-${env}'
 var hostingPlanName = 'red-${location_prefix}-${appName}-asp-${env}'
@@ -57,7 +58,7 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2021-03-01' = {
 resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
   name: functionAppName
   location: location
-  kind: 'functionapp'
+  kind: 'functionapp,linux'
   identity: {
     type: 'SystemAssigned'
   }
@@ -70,6 +71,10 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
           value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
         }
         {
+          name: 'blobstoragetriggerpyacct_STORAGE'
+          value: 'DefaultEndpointsProtocol=https;AccountName=blobstoragetriggerpyacct;AccountKey=aTXqUww8EEYxYLh2UN7VADCKttoBztjU/Cr/sjsnzsKxc7eIRMPebKmktttGXf/LeVpvhGIbeHmZ+AStjSiArg==;EndpointSuffix=core.windows.net'
+        }
+        {
           name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
           value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
         }
@@ -79,7 +84,7 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
         }
         {
           name: 'FUNCTIONS_EXTENSION_VERSION'
-          value: '~2'
+          value: '~4'
         }
         {
           name: 'WEBSITE_NODE_DEFAULT_VERSION'
