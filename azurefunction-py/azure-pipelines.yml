@@ -9,7 +9,7 @@ trigger:
       - main
   paths:
     include:
-    - azurefunction-python
+    - azurefunction-py
 
 pool:
   vmImage: ubuntu-latest
