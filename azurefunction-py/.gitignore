@@ -122,6 +122,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+.python_packages
+
 # Azure Functions artifacts
 bin
 obj
@@ -129,7 +131,6 @@ appsettings.json
 local.settings.json
 
 # Azurite artifacts
-__blobstorage__*
-__queuestorage__
-__azurite_db*__.json
-.python_packages
+**/__azurite*
+**/__queuestorage__
+**/__blobstorage__

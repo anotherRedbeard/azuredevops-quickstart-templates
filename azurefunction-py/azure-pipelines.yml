@@ -106,6 +106,7 @@ stages:
                 appType: 'workflowapp'
                 appName: $(PROVISIONED_LA_NAME)
                 package: '$(System.ArtifactsDirectory)/app-src/*.zip'
+                appSettings: -blobstoragetriggerpyacct_STORAGE DefaultEndpointsProtocol=https;AccountName=redcusstorageacct001dev;AccountKey=Zgqq21rRgpE4msQ8FJ3JpZAIO86cPQWR7nqppTj4UBDB8s5sDPkxC+YmLAMIE6e5PqIjy82BZ28T+ASttCRM5w==;EndpointSuffix=core.windows.net
                 deploymentMethod: 'zipDeploy'
 
 
@@ -147,4 +148,5 @@ stages:
                 appType: 'workflowapp'
                 appName: $(PROVISIONED_LA_NAME)
                 package: '$(System.ArtifactsDirectory)/app-src/*.zip'
+                appSettings: -blobstoragetriggerpyacct_STORAGE DefaultEndpointsProtocol=https;AccountName=redcusstorageacct001prd;AccountKey=w9ATMAL6akA33o3Kc6yMJ2jf6vzelk+S+GBDshKlkF8PyqOFomoA0OPs9/etzD7Dxbf84E+CioFf+AStfZjivQ==;EndpointSuffix=core.windows.net
                 deploymentMethod: 'zipDeploy'
