@@ -1,5 +1,5 @@
-.git*
-.vscode
-local.settings.json
-test
-.venv
+#.git*
+#.vscode
+#local.settings.json
+#test
+#.venv
