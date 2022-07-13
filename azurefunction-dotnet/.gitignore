@@ -264,6 +264,6 @@ __pycache__/
 *.pyc
 
 # Azurite artifacts
-__blobstorage__
-__queuestorage__
-__azurite_db*__.json
+**/__azurite*
+**/__queuestorage__
+**/__blobstorage__
