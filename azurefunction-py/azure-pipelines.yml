@@ -148,6 +148,14 @@ stages:
                   az deployment group create --resource-group $(RESOURCE_GROUP_NAME)-prd --template-file $(MAIN_TEMPLATE_FILE_LOCATION) --parameters location_prefix=$(LOCATION_PREFIX) appName=$(FUNCTION_APP_NAME) env=prd
                   echo "##vso[task.setvariable variable=PROVISIONED_LA_NAME]$(az deployment group show --resource-group $(RESOURCE_GROUP_NAME)-prd --name main  --query properties.outputs.function_app.value  --output tsv)"
 
+            # grab secrets from key vault
+            - task: AzureKeyVault@2
+              inputs:
+                connectedServiceName: $(SERVICE_CONNECTION) # Azure subscription
+                keyVaultName: red-cus-storage-kv-prd # Name of existing key vault
+                secretsFilter: '*' # Downloads all secrets for the key vault
+                runAsPreJob: true # Runs before the job starts
+
             # deploy zip to app service
             - task: AzureFunctionApp@1  
               displayName: Deploy Function App
@@ -156,5 +164,5 @@ stages:
                 appType: 'workflowapp'
                 appName: $(PROVISIONED_LA_NAME)
                 package: '$(System.ArtifactsDirectory)/app-src/*.zip'
-                appSettings: -blobstoragetriggerpyacct_STORAGE DefaultEndpointsProtocol=https;AccountName=redcusstorageacct001prd;AccountKey=w9ATMAL6akA33o3Kc6yMJ2jf6vzelk+S+GBDshKlkF8PyqOFomoA0OPs9/etzD7Dxbf84E+CioFf+AStfZjivQ==;EndpointSuffix=core.windows.net
+                appSettings: -blobstoragetriggerpyacct_STORAGE $(blob-storage-connection-secret)
                 deploymentMethod: 'zipDeploy'

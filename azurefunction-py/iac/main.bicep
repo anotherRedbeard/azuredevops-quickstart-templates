@@ -76,7 +76,7 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
         }
         {
           name: 'blobstoragetriggerpyacct_STORAGE'
-          value: 'DefaultEndpointsProtocol=https;AccountName=blobstoragetriggerpyacct;AccountKey=aTXqUww8EEYxYLh2UN7VADCKttoBztjU/Cr/sjsnzsKxc7eIRMPebKmktttGXf/LeVpvhGIbeHmZ+AStjSiArg==;EndpointSuffix=core.windows.net'
+          value: 'placeholder'
         }
         {
           name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
