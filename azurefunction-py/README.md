@@ -57,8 +57,9 @@ To run the project locally, you will need to do the following:
 The `azure-pipelines.yml` file represents an example of how you can build and deploy (CI/CD) this standard logic app into a lower and higher level environment from your source control repo.  This is fairly straight-forward pipeline, but I'll call out some things below to notice. I created this using the [documentation created by Functions team](https://docs.microsoft.com/en-us/azure/azure-functions/functions-how-to-azure-devops?tabs=dotnet-core%2Cyaml%2Ccsharp)
 
 - The overall flow of the `azure-pipelines.yml` file is to package up the files that will be used to deploy the infrastructure and the code into artifacts, then deploy them to Azure.
-  - The infrastructure piece is using Bicep templates and is stored in the `iac` folder.  This is all the templates you will need to create all the resources you need to stand-up a Functions App.
-  - The code piece is stored in the `publish_output` folder that was created when I used the Publish task to publish the app.  That is what is getting archived into a `build${BuildId}.zip` file that gets deployed to Azure.
+  - The infrastructure piece is using Bicep templates and is stored in the `iac` folder.  This template is used only to create the azure function related resources.  There is a dependency on a storage account and key vault that is assumed to already be created so we can reference it in the deployment.
+  - The key vault is used to push config items out to the function app configuration so we don't have to worry about CI/CD variables or hard-coding connection strings and endpoints anywhere.
+  - The code is archived into a `build${BuildId}.zip` and is stored as an artifact called `app-src`.  The deployment gets the secrets from key vault and then deploys the `app-src/*.zip` file and updated the appSettings using the key vault secrets.
 
 #### Parameters
 
