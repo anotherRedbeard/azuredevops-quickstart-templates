@@ -12,7 +12,7 @@ pool:
 variables:
   workingDir: $(Build.Repository.LocalPath)/azuredatafactory/src
   serviceConnection: 'QuickStartTemplates-AzureServiceConnection'
-  subscriptionId: $(SubscriptionId)
+  subscriptionId: $(AzureSubId)
   resourceGroupPartialName: 'red-adfdemo-rg'
   dataFactoryPartialName: 'red-demo-adf'
   locationName: 'southcentralus'
