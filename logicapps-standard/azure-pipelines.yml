@@ -15,6 +15,10 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
+  subscriptionId: $(AzureSubId)
+  otherLAResourceGroupName: 'red-scus-logicappdemo-rg-dev'
+  otherLASiteName: 'red-scus-logicappdemo-rg-dev'
+  otherLAWorkflowName: 'testworkflow'
   ARCHIVE_FOLDER: 'archive'
   SERVICE_CONNECTION: 'QuickStartTemplates-AzureServiceConnection'
   LOGIC_APP_NAME: 'stateless'
@@ -22,6 +26,7 @@ variables:
   LOCATION_NAME: 'centralus'
   LOCATION_PREFIX: 'cus'
   LASTD_TEMPLATE_FILE_LOCATION: '$(System.ArtifactsDirectory)/app-iac/logicapps-standard/iac/main.bicep'
+  CALLBACK_URL: ''
   RUNTIME_URL: ''
   managedApiConnections.azurequeues.connectionRuntimeUrl: '$(RUNTIME_URL)'
 
@@ -97,6 +102,17 @@ stages:
         targetPath: '$(ARCHIVE_FOLDER)/iac'
         artifact: 'app-iac'
         publishLocation: 'pipeline'
+
+    # run Azure CLI command to get LogicAppCallbackUrl
+    - task: AzureCLI@2
+      displayName: Get another StdLogicApp CallbackUrl
+      inputs:
+        azureSubscription: $(SERVICE_CONNECTION)
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+          echo "##vso[task.setvariable variable=CALLBACK_URL]$(az rest --method post --uri https://management.azure.com/subscriptions/$(subscriptionId)/resourceGroups/$(otherLAResourceGroupName)/providers/Microsoft.Web/sites/$(otherLASiteName)/hostruntime/runtime/webhooks/workflow/api/management/workflows/$(otherLAWorkflowName)/triggers/manual/listCallbackUrl?api-version=2018-11-01 --query value --output tsv)"
+          echo $(CALLBACK_URL)
 
 - stage: DevDeploy
   displayName: Deploy to Dev
