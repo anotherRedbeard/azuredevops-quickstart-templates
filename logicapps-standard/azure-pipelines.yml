@@ -17,7 +17,7 @@ pool:
 variables:
   subscriptionId: $(AzureSubId)
   otherLAResourceGroupName: 'red-scus-logicappdemo-rg-dev'
-  otherLASiteName: 'red-scus-logicappdemo-rg-dev'
+  otherLASiteName: 'red-cus-logicappdemo'
   otherLAWorkflowName: 'testworkflow'
   ARCHIVE_FOLDER: 'archive'
   SERVICE_CONNECTION: 'QuickStartTemplates-AzureServiceConnection'
