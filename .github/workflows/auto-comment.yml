@@ -4,6 +4,7 @@ on:
     types: [opened]
 jobs:
   comment:
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
     - uses: actions/github-script@0.8.0
@@ -19,4 +20,4 @@ jobs:
     - uses: actions/add-to-project@v0.3.0
       with:
         project-url: https://github.com/users/anotherRedbeard/projects/3
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        github-token: ${{secrets.GITHUB_TOKEN}}
