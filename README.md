@@ -32,3 +32,6 @@ Should there be any specific instructions or exceptions to these basic guideline
 Please submit issues if you have any suggestions or questions or if something isn't working as expected.
 
 #### Thanks!
+
+### Status Badge
+[![Auto-comment GH Script](https://github.com/anotherRedbeard/azuredevops-quickstart-templates/actions/workflows/auto-comment.yml/badge.svg)](https://github.com/anotherRedbeard/azuredevops-quickstart-templates/actions/workflows/auto-comment.yml)
