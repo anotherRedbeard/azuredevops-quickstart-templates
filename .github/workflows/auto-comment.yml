@@ -1,0 +1,23 @@
+name: Auto-comment GH Script
+on:
+  issues:
+    types: [opened]
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/github-script@0.8.0
+      with:
+        github-token: {% raw %}${{secrets.GITHUB_TOKEN}}{% endraw %}
+        script: |
+            github.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: "🎉 Thank you for creating an issue!  Someone will respond as soon as they can."
+            })
+            github.projects.createCard({
+            column_id: {{columnID}},
+            content_id: context.payload.issue.id,
+            content_type: "Issue"
+            });
