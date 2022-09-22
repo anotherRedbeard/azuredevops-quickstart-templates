@@ -16,8 +16,7 @@ jobs:
               repo: context.repo.repo,
               body: "🎉 Thank you for creating an issue!  Someone will respond as soon as they can."
             });
-            github.projects.createCard({
-              column_id: {{columnID}},
-              content_id: context.payload.issue.id,
-              content_type: "Issue"
-            });
+    - uses: actions/add-to-project@v0.3.0
+      with:
+        project-url: https://github.com/users/anotherRedbeard/projects/3
+        github-token: ${{ secrets.GITHUB_TOKEN }}
