@@ -1,4 +1,5 @@
-# Azure DevOps Quickstart
+# Azure DevOps Quickstart [![Auto-comment GH Script](https://github.com/anotherRedbeard/azuredevops-quickstart-templates/actions/workflows/auto-comment.yml/badge.svg)](https://github.com/anotherRedbeard/azuredevops-quickstart-templates/actions/workflows/auto-comment.yml)
+
 
 This folder contains several example (simple) Azure resources that provide a quick start to get something up and running and deploying to Azure using Yaml Pipelines in Azure DevOps.  More will be added as I have time so please keep checking in to see what's new.
 
@@ -33,5 +34,3 @@ Please submit issues if you have any suggestions or questions or if something is
 
 #### Thanks!
 
-### Status Badge
-[![Auto-comment GH Script](https://github.com/anotherRedbeard/azuredevops-quickstart-templates/actions/workflows/auto-comment.yml/badge.svg)](https://github.com/anotherRedbeard/azuredevops-quickstart-templates/actions/workflows/auto-comment.yml)
