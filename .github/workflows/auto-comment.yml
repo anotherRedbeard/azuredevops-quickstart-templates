@@ -7,6 +7,8 @@ jobs:
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2
     - name: Comment on new issue
       uses: actions/github-script@0.8.0
       with:
