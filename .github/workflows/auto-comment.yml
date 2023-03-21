@@ -1,0 +1,30 @@
+name: Auto-comment GH Script
+on:
+  issues:
+    types: [opened]
+jobs:
+  comment:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2
+    - name: Comment on new issue
+      uses: actions/github-script@0.8.0
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+            const fs = require('fs')
+            const issueBody = fs.readFileSync(".github/ISSUE_RESPONSES/comment.md", "utf8")
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: issueBody
+            })
+    - name: Add issue to project board
+      uses: actions/add-to-project@v0.3.0
+      with:
+        project-url: https://github.com/users/anotherRedbeard/projects/3
+        github-token: ${{secrets.CR_PAT}}
+        labeled: bug
