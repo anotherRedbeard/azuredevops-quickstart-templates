@@ -50,8 +50,8 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2021-03-01' = {
   location: location
   kind: 'linux'
   sku: {
-    name: 'Y1'
-    tier: 'Dynamic'
+    name: 'EP1'
+    tier: 'ElasticPremium'
   }
   properties: {
     reserved: true //required for linux
