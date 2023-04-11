@@ -19,7 +19,7 @@ variables:
   ARCHIVE_FOLDER: 'archive'
   SERVICE_CONNECTION: 'QuickStartTemplates-AzureServiceConnection'
   FUNCTION_APP_NAME: 'pyfunc'
-  RESOURCE_GROUP_NAME: 'red-cus-demo-rg'
+  RESOURCE_GROUP_NAME: 'red-cus-py-demo-rg'
   LOCATION_NAME: 'centralus'
   LOCATION_PREFIX: 'cus'
   MAIN_TEMPLATE_FILE_LOCATION: '$(System.ArtifactsDirectory)/app-iac/$(workingDirectory)/iac/main.bicep'
