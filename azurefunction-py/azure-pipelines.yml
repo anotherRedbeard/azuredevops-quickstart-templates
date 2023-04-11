@@ -18,7 +18,7 @@ variables:
   workingDirectory: 'azurefunction-py'
   ARCHIVE_FOLDER: 'archive'
   SERVICE_CONNECTION: 'QuickStartTemplates-AzureServiceConnection'
-  FUNCTION_APP_NAME: 'pyfunc'
+  FUNCTION_APP_NAME: 'pyfuncapp'
   RESOURCE_GROUP_NAME: 'red-cus-py-demo-rg'
   LOCATION_NAME: 'centralus'
   LOCATION_PREFIX: 'cus'
