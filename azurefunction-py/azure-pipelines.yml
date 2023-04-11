@@ -20,8 +20,8 @@ variables:
   SERVICE_CONNECTION: 'QuickStartTemplates-AzureServiceConnection'
   FUNCTION_APP_NAME: 'pyfuncapp'
   RESOURCE_GROUP_NAME: 'red-cus-py-demo-rg'
-  LOCATION_NAME: 'eastus2'
-  LOCATION_PREFIX: 'eus2'
+  LOCATION_NAME: 'southcentralus'
+  LOCATION_PREFIX: 'scus'
   MAIN_TEMPLATE_FILE_LOCATION: '$(System.ArtifactsDirectory)/app-iac/$(workingDirectory)/iac/main.bicep'
 
 stages:
