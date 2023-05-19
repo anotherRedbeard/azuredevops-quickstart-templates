@@ -7,7 +7,7 @@ namespace azurefunction
     {
         [FunctionName("BlobTriggerDemo")]
         public static void Run(
-            [BlobTrigger("dotnet/{name}", Connection = "AzureWebJobsStorage")] byte[] myBlob,
+            [BlobTrigger("dotnet/{name}")] byte[] myBlob,
             string name,
             ILogger log)
         {
