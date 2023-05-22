@@ -21,6 +21,9 @@ param appInsightsLocation string = resourceGroup().location
 @description('Environment you are deploying to')
 param env string = 'dev'
 
+@description('Storage account name for blob trigger')
+param blobStorageAccountTriggerName string
+
 @description('The language worker runtime to load in the function app.')
 @allowed([
   'node'
@@ -65,13 +68,13 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
     serverFarmId: hostingPlan.id
     siteConfig: {
       appSettings: [
-        //{
-        //  name: 'AzureWebJobsStorage'
-        //  value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
-        //}
         {
-          name: 'AzureWebJobsSecretStorageType'
-          value: 'Blob'
+          name: 'AzureWebJobsStorage'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
+        }
+        {
+          name: 'BlobTriggerStorage__accountName'
+          value: blobStorageAccountTriggerName
         }
         {
           name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'

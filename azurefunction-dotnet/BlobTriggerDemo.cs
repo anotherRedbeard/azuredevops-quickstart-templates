@@ -7,7 +7,7 @@ namespace azurefunction
     {
         [FunctionName("BlobTriggerDemo")]
         public static void Run(
-            [BlobTrigger("dotnet/{name}")] byte[] myBlob, string name, ILogger log)
+            [BlobTrigger("dotnet/{name}", Connection = "BlobTriggerStorage")] byte[] myBlob, string name, ILogger log)
         {
             log.LogInformation($"Blob trigger function processed blob: {name}");
         }
