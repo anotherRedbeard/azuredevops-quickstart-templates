@@ -118,4 +118,55 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
   }
 }
 
+// Get Storage Blob Data Owner role definition from the guid
+resource roleStorageBlobDataOwnerDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' existing = {
+  scope: subscription()
+  name: 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
+}
+// Get Storage Account Owner role definition from the guid
+resource roleStorageAccountOwnerDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' existing = {
+  scope: subscription()
+  name: '17d1049b-9a84-46fb-8f53-869881c3d3ab'
+}
+// Get Storage Queue Data Contributor role definition from the guid
+resource roleStorageQueueDataContributorDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' existing = {
+  scope: subscription()
+  name: '974c5e8b-45b9-4653-ba55-5f855dd0fb88'
+}
+
+
+// Create role assignment
+resource sbdoRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+  name: guid(uniqueString(resourceGroup().id, functionApp.id, 'StorageBlobDataOwner'))
+  scope: storageAccount
+  properties: {
+    description: 'Storage Blob Data Owner assignment'
+    principalId: functionApp.identity.principalId
+    roleDefinitionId: roleStorageBlobDataOwnerDefinition.id
+  }
+}
+
+// Create role assignment
+resource saoRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+  name: guid(uniqueString(resourceGroup().id, functionApp.id, 'StorageAccountOwner'))
+  scope: storageAccount
+  properties: {
+    description: 'Storage Account Owner assignment'
+    principalId: functionApp.identity.principalId
+    roleDefinitionId: roleStorageAccountOwnerDefinition.id
+  }
+}
+
+// Create role assignment
+resource sqdcRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+  name: guid(uniqueString(resourceGroup().id, functionApp.id, 'StorageQueueDataContributor'))
+  scope: storageAccount
+  properties: {
+    description: 'Storage Queue Data Contributor assignment'
+    principalId: functionApp.identity.principalId
+    roleDefinitionId: roleStorageQueueDataContributorDefinition.id
+  }
+}
+
+
 output function_app string = functionApp.name
