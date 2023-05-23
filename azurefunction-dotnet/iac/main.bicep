@@ -119,24 +119,9 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
     Request_Source: 'rest'
   }
 }
-/*
-// Get Storage Blob Data Owner role definition from the guid
-resource roleStorageBlobDataOwnerDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' existing = {
-  scope: subscription()
-  name: 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
-}
-// Get Storage Account Owner role definition from the guid
-resource roleStorageAccountOwnerDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' existing = {
-  scope: subscription()
-  name: '17d1049b-9a84-46fb-8f53-869881c3d3ab'
-}
-// Get Storage Queue Data Contributor role definition from the guid
-resource roleStorageQueueDataContributorDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' existing = {
-  scope: subscription()
-  name: '974c5e8b-45b9-4653-ba55-5f855dd0fb88'
-}
-*/
 
+// You can pull the guid's for the roles from here https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles
+// You will also need write access on the subscription to add these role assignments so make sure your service principal has that.
 // Create role assignment for Storage Blob Data Owner
 module sbdoRoleAssignment './role-storage-account.bicep' = {
   name: guid(uniqueString(resourceGroup().id, functionApp.id, 'StorageBlobDataOwner'))
