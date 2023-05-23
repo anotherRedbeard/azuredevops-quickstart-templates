@@ -50,6 +50,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
 //existing storage account
 resource storageAccountExisting 'Microsoft.Storage/storageAccounts@2021-08-01' existing = {
   name: blobStorageAccountTriggerName
+  scope: resourceGroup('red-cus-storageaccountdemos-rg')
 }
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2021-03-01' = {
