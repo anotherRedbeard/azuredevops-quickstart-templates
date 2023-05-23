@@ -47,11 +47,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   kind: 'StorageV2'
 }
 
-//existing storage account
-resource storageAccountExisting 'Microsoft.Storage/storageAccounts@2021-08-01' existing = {
-  name: blobStorageAccountTriggerName
-  scope: resourceGroup('red-cus-storageaccountdemos-rg')
-}
+
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2021-03-01' = {
   name: hostingPlanName
@@ -142,7 +138,19 @@ resource roleStorageQueueDataContributorDefinition 'Microsoft.Authorization/role
 
 
 // Create role assignment
-resource sbdoRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+module sbdoRoleAssignment './role.bicep' = {
+  name: guid(uniqueString(resourceGroup().id, functionApp.id, 'StorageBlobDataOwner'))
+  scope: resourceGroup('red-cus-storageaccountdemos-rg')
+  params: {
+    blobStorageAccountTriggerName: blobStorageAccountTriggerName
+    roleAssignmentDesc: 'Storage Blob Data Owner assignment'
+    roleAssignmentName: 'StorageBlobDataOwner'
+    roleDefinitionId: 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
+    principalId: functionApp.identity.principalId
+  }
+}
+
+/*resource sbdoRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
   name: guid(uniqueString(resourceGroup().id, functionApp.id, 'StorageBlobDataOwner'))
   scope: storageAccountExisting
   properties: {
@@ -173,6 +181,7 @@ resource sqdcRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-
     roleDefinitionId: roleStorageQueueDataContributorDefinition.id
   }
 }
+*/
 
 
 output function_app string = functionApp.name
