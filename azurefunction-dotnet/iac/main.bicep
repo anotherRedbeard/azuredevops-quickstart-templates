@@ -119,7 +119,7 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
     Request_Source: 'rest'
   }
 }
-
+/*
 // Get Storage Blob Data Owner role definition from the guid
 resource roleStorageBlobDataOwnerDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' existing = {
   scope: subscription()
@@ -135,53 +135,42 @@ resource roleStorageQueueDataContributorDefinition 'Microsoft.Authorization/role
   scope: subscription()
   name: '974c5e8b-45b9-4653-ba55-5f855dd0fb88'
 }
+*/
 
-
-// Create role assignment
-module sbdoRoleAssignment './role.bicep' = {
+// Create role assignment for Storage Blob Data Owner
+module sbdoRoleAssignment './role-storage-account.bicep' = {
   name: guid(uniqueString(resourceGroup().id, functionApp.id, 'StorageBlobDataOwner'))
   scope: resourceGroup('red-cus-storageaccountdemos-rg')
   params: {
-    blobStorageAccountTriggerName: blobStorageAccountTriggerName
+    assignmentResourceName: blobStorageAccountTriggerName
     roleAssignmentDesc: 'Storage Blob Data Owner assignment'
-    roleAssignmentName: 'StorageBlobDataOwner'
     roleDefinitionId: 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
     principalId: functionApp.identity.principalId
   }
 }
 
-/*resource sbdoRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+// Create role assignment for Storage Blob Data Owner
+module saoRoleAssignment './role-storage-account.bicep' = {
   name: guid(uniqueString(resourceGroup().id, functionApp.id, 'StorageBlobDataOwner'))
-  scope: storageAccountExisting
-  properties: {
-    description: 'Storage Blob Data Owner assignment'
+  scope: resourceGroup('red-cus-storageaccountdemos-rg')
+  params: {
+    assignmentResourceName: blobStorageAccountTriggerName
+    roleAssignmentDesc: 'Storage Account Owner assignment'
+    roleDefinitionId: '17d1049b-9a84-46fb-8f53-869881c3d3ab'
     principalId: functionApp.identity.principalId
-    roleDefinitionId: roleStorageBlobDataOwnerDefinition.id
   }
 }
 
-// Create role assignment
-resource saoRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-  name: guid(uniqueString(resourceGroup().id, functionApp.id, 'StorageAccountOwner'))
-  scope: storageAccountExisting
-  properties: {
-    description: 'Storage Account Owner assignment'
+// Create role assignment for Storage Blob Data Owner
+module sqdcRoleAssignment './role-storage-account.bicep' = {
+  name: guid(uniqueString(resourceGroup().id, functionApp.id, 'StorageBlobDataOwner'))
+  scope: resourceGroup('red-cus-storageaccountdemos-rg')
+  params: {
+    assignmentResourceName: blobStorageAccountTriggerName
+    roleAssignmentDesc: 'Storage Queue Data Contributor assignment'
+    roleDefinitionId: '974c5e8b-45b9-4653-ba55-5f855dd0fb88'
     principalId: functionApp.identity.principalId
-    roleDefinitionId: roleStorageAccountOwnerDefinition.id
   }
 }
-
-// Create role assignment
-resource sqdcRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
-  name: guid(uniqueString(resourceGroup().id, functionApp.id, 'StorageQueueDataContributor'))
-  scope: storageAccountExisting
-  properties: {
-    description: 'Storage Queue Data Contributor assignment'
-    principalId: functionApp.identity.principalId
-    roleDefinitionId: roleStorageQueueDataContributorDefinition.id
-  }
-}
-*/
-
 
 output function_app string = functionApp.name
