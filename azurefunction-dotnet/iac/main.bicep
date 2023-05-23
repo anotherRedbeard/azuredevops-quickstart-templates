@@ -151,7 +151,7 @@ module sbdoRoleAssignment './role-storage-account.bicep' = {
 
 // Create role assignment for Storage Blob Data Owner
 module saoRoleAssignment './role-storage-account.bicep' = {
-  name: guid(uniqueString(resourceGroup().id, functionApp.id, 'StorageBlobDataOwner'))
+  name: guid(uniqueString(resourceGroup().id, functionApp.id, 'StorageAccountOwner'))
   scope: resourceGroup('red-cus-storageaccountdemos-rg')
   params: {
     assignmentResourceName: blobStorageAccountTriggerName
@@ -163,7 +163,7 @@ module saoRoleAssignment './role-storage-account.bicep' = {
 
 // Create role assignment for Storage Blob Data Owner
 module sqdcRoleAssignment './role-storage-account.bicep' = {
-  name: guid(uniqueString(resourceGroup().id, functionApp.id, 'StorageBlobDataOwner'))
+  name: guid(uniqueString(resourceGroup().id, functionApp.id, 'StorageQueueDataContributor'))
   scope: resourceGroup('red-cus-storageaccountdemos-rg')
   params: {
     assignmentResourceName: blobStorageAccountTriggerName
