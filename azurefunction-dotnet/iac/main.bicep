@@ -75,8 +75,8 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
           value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
         }
         {
-          name: 'BlobTriggerStorage__accountName'
-          value: blobStorageAccountTriggerName
+          name: 'BlobTriggerStorage__serviceUri'
+          value: 'https://${blobStorageAccountTriggerName}.blob.${environment().suffixes.storage}'
         }
         {
           name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
