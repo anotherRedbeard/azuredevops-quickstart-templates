@@ -48,6 +48,13 @@ Instead it has all the src files under the root folder like this
 
 This is due to how the cli creates the functions app/project for you.  At some point I might go back and figure out if it can be modified by passing in a 'root', but my early attempts were unsuccessful so we have this for now.
 
+### IAC
+
+Just a bit here about the 2 `.bicep` files
+
+- `main.bicep` - Responsible to deploying all of the infrastructure to azure.  Any changes to the app configuration would be set here. This is also where we set the roles to allow the function app to connect to the blob storage account as a managed identity.  I following the [Functions Bindings Storage Blob Trigger - Identity Based Connections](https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-blob-trigger?pivots=programming-language-csharp&tabs=python-v2%2Cin-process#identity-based-connections) doc to get this setup correctly.  The 'TLDR' is that I created an app setting that stores the service uri for the blob storage account.  The format is `<CONNECTION_NAME_PREFIX>__serviceUri` where `CONNECTION_NAME_PREFIX>` matches what is in the blob trigger binding in the [BlobTriggerDemo.cs](https://github.com/anotherRedbeard/azuredevops-quickstart-templates/blob/9c8432336710a22995410b1b2ea8af1a9120d962/azurefunction-dotnet/BlobTriggerDemo.cs#L10) file. Check out the appSettings section to see what I mean.
+- `role-storage-account.bicep` - This is a handy little template that will create a role assignment in azure for a given role to a storage account. It's not 100% generic or it would be super cool, but you can't use a variable for a resource type...if this interest you click [here](https://github.com/Azure/bicep/issues/1761) for some more useful info on the matter.
+
 ## Local
 
 To run the project locally, you will need to do the following:
@@ -74,7 +81,3 @@ The `azure-pipelines.yml` file represents an example of how you can build and de
 - The overall flow of the `azure-pipelines.yml` file is to package up the files that will be used to deploy the infrastructure and the code into artifacts, then deploy them to Azure.
   - The infrastructure piece is using Bicep templates and is stored in the `iac` folder.  This is all the templates you will need to create all the resources you need to stand-up a Functions App.
   - The code piece is stored in the `publish_output` folder that was created when I used the Publish task to publish the app.  That is what is getting archived into a `build${BuildId}.zip` file that gets deployed to Azure.
-
-#### Parameters
-
-*will be updated soon*
