@@ -30,15 +30,15 @@
                 }
             }
         },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
         "triggers": {
             "manual": {
                 "type": "Request",
-                "kind": "Http",
-                "inputs": {}
+                "description": "This is a test note",
+                "kind": "Http"
             }
-        },
-        "contentVersion": "1.0.0.0",
-        "outputs": {}
+        }
     },
     "kind": "Stateful"
 }
