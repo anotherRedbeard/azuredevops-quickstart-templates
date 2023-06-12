@@ -17,6 +17,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         else:
             name = req_body.get('name')
 
+    
     if name:
         return func.HttpResponse(f"Hello there, {name}. This HTTP triggered function executed successfully in {env_setting} env.")
     else:
