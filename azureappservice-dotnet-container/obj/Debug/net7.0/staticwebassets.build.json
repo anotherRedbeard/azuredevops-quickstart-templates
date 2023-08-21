@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "EA+torQZ3ZLbeNGfEL0iaLALZrKkVm4/+/Z2G9F7mp8=",
+  "Source": "azureappservice-dotnet-container",
+  "BasePath": "_content/azureappservice-dotnet-container",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

@@ -1,0 +1,50 @@
+trigger:
+- main
+
+variables:
+  azureSubscription: 'QuickStartTemplates-AzureServiceConnection-Private Functions Deploy'
+  appName: 'red-cus-privatewebapp-wa'
+  containerRegistry: 'redcusprivateregistry.azurecr.io'
+  dockerRegistryServiceConnection: 'AcrMSI'
+  imageRepository: 'dockerimage'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  tag: '$(Build.BuildId)'
+
+stages:
+- stage: Build
+  displayName: Build and publish stage
+  jobs:
+  - job: Build
+    displayName: Build job
+    pool:
+      name: 'MyWindowsAgenPool'
+    steps:
+    - task: DockerInstaller@0
+      inputs:
+        dockerVersion: '17.09.0-ce'
+    
+    - script: |
+        whoami
+      displayName: Check User Context
+
+    - script: |
+        docker version
+      displayName: Check Docker Version
+
+    - task: Docker@2
+      displayName: Build and publish image to Azure Container Registry
+      inputs:
+        command: buildAndPush
+        containerRegistry: $(dockerRegistryServiceConnection)
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        tags: |
+          $(tag)
+
+    ## Add the below snippet at the end of your pipeline
+    - task: AzureWebAppContainer@1
+      displayName: 'Azure Web App on Container Deploy'
+      inputs:
+        azureSubscription: $(azureSubscription)
+        appName: $(appName)
+        imageName: $(containerRegistry)/$(imageRepository):$(tag)
