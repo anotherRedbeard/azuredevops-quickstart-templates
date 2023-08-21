@@ -23,6 +23,7 @@ variables:
   LOCATION_NAME: 'southcentralus'
   LOCATION_PREFIX: 'scus'
   MAIN_TEMPLATE_FILE_LOCATION: '$(System.ArtifactsDirectory)/app-iac/$(workingDirectory)/iac/main.bicep'
+  system.debug: true
 
 stages:
 - stage: Build
