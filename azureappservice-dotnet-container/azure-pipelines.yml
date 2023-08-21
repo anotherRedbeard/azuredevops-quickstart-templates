@@ -2,7 +2,7 @@ trigger:
 - main
 
 variables:
-  azureSubscription: 'QuickStartTemplates-AzureServiceConnection-Private Functions Deploy'
+  azureSubscription: 'QuickStartTemplates-AzureServiceConnection'
   appName: 'red-cus-privatewebapp-wa'
   containerRegistry: 'redcusprivateregistry.azurecr.io'
   dockerRegistryServiceConnection: 'AcrMSI'
