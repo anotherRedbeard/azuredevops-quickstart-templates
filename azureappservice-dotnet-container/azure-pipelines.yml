@@ -7,7 +7,7 @@ variables:
   containerRegistry: 'redcusprivateregistry.azurecr.io'
   dockerRegistryServiceConnection: 'AcrMSI'
   imageRepository: 'dockerimage'
-  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  dockerfilePath: '$(Build.SourcesDirectory)/azureappservice-dotnet-container/Dockerfile'
   tag: '$(Build.BuildId)'
 
 stages:
