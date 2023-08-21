@@ -29,7 +29,7 @@ stages:
 
     - script: |
         docker version
-        ls -ltr
+        dir
       displayName: Check Docker Version
 
     - task: Docker@2
