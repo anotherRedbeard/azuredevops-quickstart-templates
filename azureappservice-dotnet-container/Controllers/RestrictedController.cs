@@ -12,7 +12,8 @@ namespace SampleWebApi.Controllers
             var json = new
             {
                 message = "This is restricted content.",
-                ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString()
+                ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
+                userAgent = HttpContext.Request.Headers["User-Agent"].ToString()
             };
 
             return Ok(json);
