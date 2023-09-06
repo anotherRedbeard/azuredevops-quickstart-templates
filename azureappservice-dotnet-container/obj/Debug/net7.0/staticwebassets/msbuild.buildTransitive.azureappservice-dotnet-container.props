@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="../buildMultiTargeting/azureappservice-dotnet-container.props" />
-</Project>
