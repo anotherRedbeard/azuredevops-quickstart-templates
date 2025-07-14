@@ -113,7 +113,7 @@ stages:
               inputs:
                 azureSubscription: $(SERVICE_CONNECTION)
                 appType: 'workflowapp'
-                appName: $(PROVISIONED_LA_NAME)
+                appName: $(FUNCTION_APP_NAME)
                 package: '$(System.ArtifactsDirectory)/app-src/*.zip'
                 appSettings: -blobstoragetriggerpyacct_STORAGE $(blob-storage-connection-secret) -EnvSetting dev
                 deploymentMethod: 'zipDeploy'
@@ -163,7 +163,7 @@ stages:
               inputs:
                 azureSubscription: $(SERVICE_CONNECTION)
                 appType: 'workflowapp'
-                appName: $(PROVISIONED_LA_NAME)
+                appName: $(FUNCTION_APP_NAME)
                 package: '$(System.ArtifactsDirectory)/app-src/*.zip'
                 appSettings: -blobstoragetriggerpyacct_STORAGE $(blob-storage-connection-secret) -EnvSetting prod
                 deploymentMethod: 'zipDeploy'
